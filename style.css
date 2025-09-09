@@ -1,0 +1,102 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+}
+
+:root {
+    --bg-general: #f6f8fc;
+    --bg-card: #ffffff;
+    --bg-card-hover: #d6d8dc;
+
+    --bg-1-normal: #919AA2;
+    --bg-2-fight: #CE416B;
+    --bg-3-flying: #8FA9DE;
+    --bg-4-poison: #AA6BC8;
+    --bg-5-ground: #D97845;
+    --bg-6-rock: #C5B78C;
+    --bg-7-bug: #91C12F;
+    --bg-8-ghost: #5269AD;
+    --bg-9-steel: #5A8EA2;
+    --bg-10-fire: #FF9D55;
+    --bg-11-water: #5090D6;
+    --bg-12-grass: #63BC5A;
+    --bg-13-electric: #F4D23C;
+    --bg-14-psychic: #FA7179;
+    --bg-15-ice: #73CEC0;
+    --bg-16-dragon: #0B6DC3;
+    --bg-17-dark: #5A5465;
+    --bg-18-fairy: #EC8FE6;
+}
+
+body {
+    background-color: var(--bg-general);
+}
+
+main {
+    margin: 5rem auto;
+    width: min(90%, 1440px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
+    gap: 2rem;
+    
+}
+
+
+
+/* CARDS */
+
+.container {
+    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+}
+
+.mainCard {
+    height: 312px;
+    background-color: var(--bg-card);
+    text-align: center;
+    clip-path: polygon(10% 40%, 100% 40%, 100% 90%, 90% 100%, 0 100%, 0 50%);
+}
+
+.mainCard:hover {
+    background-color: var(--bg-card-hover);
+}
+
+.container:hover > .pokeImg {
+    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.6));
+}
+
+.pokeImg {
+    height: 156px;
+    position: absolute;
+    left: 50%;
+    translate: -50%;
+    z-index: 1;
+    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+}
+
+.mainCard h3 {
+    font-weight: 400;
+    margin-top: 164px;
+}
+.mainCard h2 {
+    margin-bottom: 16px;
+}
+
+.flex_col {
+    display: flex;
+    flex-direction: column;
+}
+
+.pokeType {
+    height: 24px;
+    object-fit: contain;
+    margin-bottom: 4px;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
