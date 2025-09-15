@@ -35,21 +35,22 @@ body {
     background-color: var(--bg-general);
 }
 
-main {
+#mainCards {
     margin: 5rem auto;
     width: min(90%, 1440px);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(156px,100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(156px, 100%), 1fr));
     gap: 2rem;
-    
 }
 
-
+.d_none {
+    display: none;
+}
 
 /* CARDS */
 
 .container {
-    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
 }
 
 .mainCard {
@@ -59,12 +60,16 @@ main {
     clip-path: polygon(10% 40%, 100% 40%, 100% 90%, 90% 100%, 0 100%, 0 50%);
 }
 
-.container:hover > .mainCard {
+.container:hover {
+    cursor: pointer;
+}
+
+.container:hover>.mainCard {
     background-color: var(--bg-card-hover);
 }
 
-.container:hover > .pokeImg {
-    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.6));
+.container:hover>.pokeImg {
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.6));
 }
 
 .pokeImg {
@@ -73,13 +78,14 @@ main {
     left: 50%;
     translate: -50%;
     z-index: 1;
-    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
 }
 
 .mainCard h3 {
     font-weight: 400;
     margin-top: 164px;
 }
+
 .mainCard h2 {
     margin-bottom: 16px;
 }
@@ -93,16 +99,73 @@ main {
     height: 24px;
     object-fit: contain;
     margin-bottom: 4px;
+    
+}
+
+.pokeTypeModal {
+    margin-right: 8px; 
+}
+
+/* LOADING SPINNER */
+
+.loading-Spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loading-Spinner.d_none {
+    display: none;
+}
+
+.loading-Spinner img {
+    height: 100px;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* DIALOG */
 
+
 .dialog {
+    /* closed */
     z-index: 2;
-    position: absolute;
-    top: 50%;
+    position: fixed;
+    top: 10%;
     left: 50%;
-    translate: -50% -50%;
+    transform: translateX(-50%);
+    width: min(80vw, 1440px);
+    border: none;
+    outline: none;
+    clip-path: polygon(10% 0%, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+}
+
+.dialog .mainCard {
+    height: 80vh;
+    background-color: var(--bg-card);
+    text-align: center;
+    clip-path: unset;
+}
+
+.dialog::backdrop {
+    opacity: 0;
+    background-color: rgba(51, 51, 51, 0.1);
+}
+
+.dialog.opened {
+    opacity: 1;
+}
+
+.dialog.opened::backdrop {
+    opacity: 1;
+    background-color: rgba(51, 51, 51, 0.95);
+    transition: all 0.3s ease-in-out;
 }
 
 footer {
