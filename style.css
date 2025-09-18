@@ -9,35 +9,59 @@
 :root {
     --bg-general: #f6f8fc;
     --bg-card: #ffffff;
-    --bg-card-hover: #d6d8dc;
+    --bg-card-hover: #f1f2f3;
 
-    --bg-1-normal: #919AA2;
-    --bg-2-fight: #CE416B;
-    --bg-3-flying: #8FA9DE;
-    --bg-4-poison: #AA6BC8;
-    --bg-5-ground: #D97845;
-    --bg-6-rock: #C5B78C;
-    --bg-7-bug: #91C12F;
-    --bg-8-ghost: #5269AD;
-    --bg-9-steel: #5A8EA2;
-    --bg-10-fire: #FF9D55;
-    --bg-11-water: #5090D6;
-    --bg-12-grass: #63BC5A;
-    --bg-13-electric: #F4D23C;
-    --bg-14-psychic: #FA7179;
-    --bg-15-ice: #73CEC0;
-    --bg-16-dragon: #0B6DC3;
-    --bg-17-dark: #5A5465;
-    --bg-18-fairy: #EC8FE6;
+    --normal-1: hsl(208, 8%, 60%);
+    --fighting-2: hsl(342, 59%, 53%);
+    --flying-3: hsl(220, 54%, 72%);
+    --poison-4: hsl(281, 46%, 60%);
+    --ground-5: hsl(21, 66%, 56%);
+    --rock-6: hsl(45, 33%, 66%);
+    --bug-7: hsl(80, 61%, 47%);
+    --ghost-8: hsl(225, 36%, 50%);
+    --steel-9: hsl(197, 29%, 49%);
+    --fire-10: hsl(25, 100%, 67%);
+    --water-11: hsl(211, 62%, 58%);
+    --grass-12: hsl(114, 42%, 55%);
+    --electric-13: hsl(49, 89%, 60%);
+    --psychic-14: hsl(356, 93%, 71%);
+    --ice-15: hsl(171, 48%, 63%);
+    --dragon-16: hsl(208, 89%, 40%);
+    --dark-17: hsl(261, 9%, 36%);
+    --fairy-18: hsl(304, 71%, 74%);
+    --bg-normal-1: hsl(208, 8%, 80%);
+    --bg-fighting-2: hsl(342, 59%, 73%);
+    --bg-flying-3: hsl(342, 59%, 73%);
+    --bg-poison-4: hsl(281, 46%, 80%);
+    --bg-ground-5: hsl(21, 66%, 76%);
+    --bg-rock-6: hsl(45, 33%, 86%);
+    --bg-bug-7: hsl(80, 61%, 67%);
+    --bg-ghost-8: hsl(225, 36%, 70%);
+    --bg-steel-9: hsl(197, 29%, 69%);
+    --bg-fire-10: hsl(25, 100%, 87%);
+    --bg-water-11: hsl(211, 62%, 78%);
+    --bg-grass-12: hsl(114, 42%, 75%);
+    --bg-electric-13: hsl(49, 89%, 80%);
+    --bg-psychic-14: hsl(356, 93%, 91%);
+    --bg-ice-15: hsl(171, 48%, 83%);
+    --bg-dragon-16: hsl(208, 89%, 60%);
+    --bg-dark-17: hsl(261, 9%, 56%);
+    --bg-fairy-18: hsl(304, 71%, 94%);
 }
 
 body {
     background-color: var(--bg-general);
 }
 
-#mainCards {
+header,
+#mainCards,
+.mainCards {
     margin: 5rem auto;
     width: min(90%, 1440px);
+}
+
+.mainCards,
+#mainCards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(156px, 100%), 1fr));
     gap: 2rem;
@@ -57,19 +81,87 @@ body {
     height: 312px;
     background-color: var(--bg-card);
     text-align: center;
-    clip-path: polygon(10% 40%, 100% 40%, 100% 90%, 90% 100%, 0 100%, 0 50%);
+    clip-path: polygon(7% 40%, 100% 40%, 100% 90%, 93% 100%, 0 100%, 0 50%);
 }
 
 .container:hover {
     cursor: pointer;
 }
 
-.container:hover>.mainCard {
-    background-color: var(--bg-card-hover);
-}
-
 .container:hover>.pokeImg {
     filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.6));
+}
+
+.container:hover>.mainCard[data-bg="normal-1"] {
+    background-color: var(--bg-normal-1);
+}
+
+.container:hover>.mainCard[data-bg="fighting-2"] {
+    background-color: var(--bg-fighting-2);
+}
+
+.container:hover>.mainCard[data-bg="flying-3"] {
+    background-color: var(--bg-flying-3);
+}
+
+.container:hover>.mainCard[data-bg="poison-4"] {
+    background-color: var(--bg-poison-4);
+}
+
+.container:hover>.mainCard[data-bg="ground-5"] {
+    background-color: var(--bg-ground-5);
+}
+
+.container:hover>.mainCard[data-bg="rock-6"] {
+    background-color: var(--bg-rock-6);
+}
+
+.container:hover>.mainCard[data-bg="bug-7"] {
+    background-color: var(--bg-bug-7);
+}
+
+.container:hover>.mainCard[data-bg="ghost-8"] {
+    background-color: var(--bg-ghost-8);
+}
+
+.container:hover>.mainCard[data-bg="steel-9"] {
+    background-color: var(--bg-steel-9);
+}
+
+.container:hover>.mainCard[data-bg="fire-10"] {
+    background-color: var(--bg-fire-10);
+}
+
+.container:hover>.mainCard[data-bg="water-11"] {
+    background-color: var(--bg-water-11);
+}
+
+.container:hover>.mainCard[data-bg="grass-12"] {
+    background-color: var(--bg-grass-12);
+}
+
+.container:hover>.mainCard[data-bg="electric-13"] {
+    background-color: var(--bg-electric-13);
+}
+
+.container:hover>.mainCard[data-bg="psychic-14"] {
+    background-color: var(--bg-psychic-14);
+}
+
+.container:hover>.mainCard[data-bg="ice-15"] {
+    background-color: var(--bg-ice-15);
+}
+
+.container:hover>.mainCard[data-bg="dragon-16"] {
+    background-color: var(--bg-dragon-16);
+}
+
+.container:hover>.mainCard[data-bg="dark-17"] {
+    background-color: var(--bg-dark-17);
+}
+
+.container:hover>.mainCard[data-bg="fairy-18"] {
+    background-color: var(--bg-fairy-18);
 }
 
 .pokeImg {
@@ -86,6 +178,7 @@ body {
     margin-top: 164px;
 }
 
+.mainCard p,
 .mainCard h2 {
     margin-bottom: 16px;
 }
@@ -95,16 +188,22 @@ body {
     flex-direction: column;
 }
 
-.pokeType {
-    height: 24px;
-    object-fit: contain;
-    margin-bottom: 4px;
-    
+.flex_row {
+    display: flex;
+    justify-content: space-between;
+    margin: 5rem auto;
+    width: min(90%, 1440px);
 }
 
-.pokeTypeModal {
-    margin-right: 8px; 
+.pokeType {
+    display: inline-block;
+    height: 1.5rem;
+    object-fit: contain;
+    margin-inline: 4px;
+    clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
 }
+
+
 
 /* LOADING SPINNER */
 
@@ -112,7 +211,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    flex: 1;
 }
 
 .loading-Spinner.d_none {
@@ -130,6 +229,7 @@ body {
     }
 }
 
+
 /* DIALOG */
 
 
@@ -143,14 +243,17 @@ body {
     width: min(80vw, 1440px);
     border: none;
     outline: none;
+    overflow-y: auto;
+    scrollbar-width: thin;
     clip-path: polygon(10% 0%, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
 }
 
 .dialog .mainCard {
     height: 80vh;
-    background-color: var(--bg-card);
     text-align: center;
     clip-path: unset;
+    background: url(./assets/img/pokeball_black.svg) center 16% / 60% no-repeat;
+    /* animation: spin 1s infinite linear; */
 }
 
 .dialog::backdrop {
@@ -168,7 +271,31 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
+.pokeTypeModal {
+    height: 2rem;
+}
+
+.mainCard table {
+    width: 80%;
+    border-spacing: 12px;
+    margin: auto;
+    text-align: center;
+}
+
+.mainCard td {
+    background-color: var(--bg-card-hover);
+    line-height: 2rem;
+    clip-path: polygon(9% 0%, 100% 0%, 100% 50%, 91% 100%, 0 100%, 0 50%);
+}
+
+.mainCard td.clipOther {
+    clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
+}
+
 footer {
+    height: 80px;
+    background-color: var(--bg-card-hover);
+    text-align: center;
     position: fixed;
     left: 0;
     bottom: 0;

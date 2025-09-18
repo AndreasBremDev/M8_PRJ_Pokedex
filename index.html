@@ -14,16 +14,21 @@
 
 </head>
 
-<body onload="init()">
+<body onload="init(curOffset)">
     <header>
-        SEARCHBAR
+        <nav>
+            <div class="wrapper">SEARCHBAR</div>
+        </nav>
     </header>
     <main>
-
+        
+        <div class="flex_row">
+            <button onclick="" id="btn_prev" class="btn">previous</button>
+            <button onclick="nextSetOfPokemon(20)" class="">next</button>
+        </div>
         <div class="loading-Spinner d_none" id="spinner">
             <img src="./assets/icon/icon.svg" alt="">
         </div>
-
         <div id="mainCards"></div>
 
         <dialog id="dialog" class="dialog" onclick="if(event.target === this){ closeDialog(); }">
