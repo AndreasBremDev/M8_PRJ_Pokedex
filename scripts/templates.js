@@ -1,6 +1,6 @@
-function getMainCardsHtml(i) {
+function getMainCardsHtml(i, pokeEvoChainNr) {
     return `
-        <div class="container" onclick="openDialog(${i})" data-id="${i + 1}">
+        <div class="container" onclick="openDialog(${i},${pokeEvoChainNr})" id="pokeId${i + 1}" data-evoChainId="${pokeEvoChainNr}">
             <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
             <article class="mainCard" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
                 <div class="flex_col">
@@ -17,7 +17,11 @@ function getPokeTypeHtml(key, i, k) {
     return `<img src="./assets/types/${typesObj[key]}.png" alt="pokemon type ${pokedex[i].types[k].type.name}" class="pokeType">`;
 }
 
-function getDialogCardHtml(i) {
+function getPokeAbilities(i, k){
+    return `<td width="50%" class="clipOther">${pokedex[i].abilities[k].ability.name.charAt(0).toUpperCase() + pokedex[i].abilities[k].ability.name.slice(1)}</td>`
+}
+
+function getDialogCardHtml(i, pokeEvoChainNr) {
     return `                
         <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
         <article class="mainCard">
@@ -44,14 +48,12 @@ function getDialogCardHtml(i) {
                         <tr>
                             <th colspan="2">Abilities</th>
                         </tr>
-                        <tr>
-                            <td width="50%" class="clipOther">${renderPokeAbilities(i, 0)}</td>
-                            <td width="50%" class="clipOther">${renderPokeAbilities(i, 1)}</td>
+                        <tr>${renderPokeAbilities(i)}
                         </tr>
                     </table>
                 </div> 
                 <div>
-                    <table>
+                    <table class="large-screen">
                         <tr>
                             <th colspan="6">Stats</th>
                         </tr>
@@ -78,12 +80,7 @@ function getDialogCardHtml(i) {
                         <tr>
                             <th colspan="5">Evolution</th>
                         </tr>
-                        <tr>
-                            <th width="20%">IMG</th>
-                            <td width="16%">Lv.16</td>
-                            <th width="20%">IMG</th>
-                            <td width="16%">Lv.32</td>
-                            <th width="20%">IMG</th>
+                        <tr>${renderPokeEvoChain(pokeEvoChainNr)}
                         </tr>
                     </table>
                 </div> 

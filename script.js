@@ -2,26 +2,17 @@ const typesObj = {
     normal: 1, fighting: 2, flying: 3, poison: 4, ground: 5, rock: 6, bug: 7, ghost: 8, steel: 9,
     fire: 10, water: 11, grass: 12, electric: 13, psychic: 14, ice: 15, dragon: 16, dark: 17, fairy: 18
 };
-let dialogRef = document.getElementById('dialog');
 const BASE_URL = 'https://pokeapi.co/api/v2/';
-const pokemon = 'pokemon/';
+const pokemon = 'pokemon/'; // max count 1302 (2025.09)
 const pokeSpecies = 'pokemon-species/';
-
-let id;
+const pokeEvoChain = 'evolution-chain/'; // max count 541 (2025.09)
+let dialogRef = document.getElementById('dialog');
 let curOffset = 0;
 let limit = 20;
 let pokeFetchJson = [];
 let pokeEvoChainFetchJson = []
 let pokedex = [];
 let pokedexEvoChain = [];
-
-// const pokeEvolution = 'evolution-chain/';
-
-// "next": "https://pokeapi.co/api/v2/pokemon?offset=40&limit=20",
-// "first/current": "https://pokeapi.co/api/v2/pokemon?offset=20&limit=20",
-// "previous": "https://pokeapi.co/api/v2/pokemon?offset=0&limit=20",
-// const typeIconUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/${typeId}.png`;
-
 
 let spinnerRef = document.getElementById('spinner')
 let mainCardsRef = document.getElementById('mainCards');
@@ -31,31 +22,24 @@ async function init(curOffset) {
     mainCardsRef.innerHTML = '';
     toggleLoadingSpinner();
     await fetchPokemonJson(curOffset);
-    pushFetchToPokedex(curOffset);
+    pushJsonToArray(curOffset, pokeFetchJson, pokedex);
     toggleLoadingSpinner();
     renderPokemon(curOffset);
-
+    pushJsonToArray(curOffset, pokeEvoChainFetchJson, pokedexEvoChain)
 }
 
 
-
-// Möglichkeit 1: globale Library, alle Daten rein fetch'n
-// Moglichkeit 2: nur fetchen, wenn benötigt wird
-//                wenn Modal öffnen, dann Daten g'fetch'd
-
 // ---Prio1--- //
-// fetch Detail for Modal view
-//      save fetch'd data in pokeDetailsFetchJson 
-//      save in -> pokedexDetails
-// save to local storage
-// check, if pokemon @pokedex + @pokedexDetails -> before fetch new
-// ---Prio2--- //
-// load next
 // load prev
-// style next/prev button
-//      cursor:pointer;
 // add next + prev Button in Modal
 //      based of the PokeNumber
+
+
+// ---Prio2--- //
+// check, if pokemon @pokedex + @pokedexDetails -> before fetch new
+// save to local storage
+// style next/prev button
+//      cursor:pointer;
 
 function toggleLoadingSpinner() {
     document.getElementById('spinner').classList.toggle('d_none');
@@ -65,29 +49,105 @@ async function fetchPokemonJson(curOffset) {
     try {
         for (let i = curOffset; i < (curOffset + limit); i++) {
             let id = i + 1;
-            let [pokemonRes, speciesRes] = await Promise.all([
-                fetch(BASE_URL + pokemon + id),
-                fetch(BASE_URL + pokeSpecies + id)
-            ]);
-
-            let [pokemonJson, speciesJson] = await Promise.all([
-                pokemonRes.json(),
-                speciesRes.json()
-            ]);
-            pokeFetchJson.push({
-                pokemon: pokemonJson,
-                species: speciesJson
-            });
+            await fetchAndPushToArr(id);
         }
     } catch (error) {
-        console.error("Console.error message:", error)
+        console.error("fetch Pokemon + Species + EvoChain:", error)
     }
     return pokeFetchJson;
 }
 
+async function fetchAndPushToArr(id) {
+    let [pokemonRes, speciesRes, evoChainRes] = await Promise.all([
+        fetch(BASE_URL + pokemon + id),
+        fetch(BASE_URL + pokeSpecies + id),
+        fetch(BASE_URL + pokeEvoChain + id) ///// ERROR: can't load imagesURL, since according Pokemon are not yet loaded (!)
+    ]);
+    let [pokemonJson, speciesJson, evoChainJson] = await Promise.all([
+        pokemonRes.json(),
+        speciesRes.json(),
+        evoChainRes.json()
+    ]);
+    pushRawDataToJsonArr(pokemonJson, speciesJson, evoChainJson);
+}
+
+function pushRawDataToJsonArr(pokemonJson, speciesJson, evoChainJson) {
+    pokeFetchJson.push({
+        pokemon: pokemonJson,
+        species: speciesJson
+    });
+    pokeEvoChainFetchJson.push({
+        evoChain: evoChainJson
+    });
+}
+
+function pushJsonToArray(curOffset, origin, destination) {
+    for (let i = curOffset; i < origin.length; i++) {
+        if (destination === pokedex) {
+            if (destination.some(item => item.name === origin[i].pokemon.name)) {
+                continue;
+            }
+            destination.push(jsonToPokedexData(origin[i]))
+        } else {
+            if (destination.some(item => item.name === origin[i].evoChain.chain.species.name)) {
+                continue;
+            }
+            destination.push(pushEvoChainFetchToPokedexEvoChain(origin[i]))
+        }
+    }
+    return destination;
+}
+
+
+
+
+function jsonToPokedexData(pokeFetchJson) {
+    return {
+        id: pokeFetchJson.pokemon.id,
+        name: pokeFetchJson.pokemon.name,
+        sprites: pokeFetchJson.pokemon.sprites.other["official-artwork"].front_default,
+        abilities: pokeFetchJson.pokemon.abilities,
+        types: pokeFetchJson.pokemon.types,
+        stats: pokeFetchJson.pokemon.stats,
+        weight: pokeFetchJson.pokemon.weight,
+        height: pokeFetchJson.pokemon.height,
+        descr_EN: pokeFetchJson.species.flavor_text_entries.find(item => item.language.name === "en").flavor_text.replace(/[\n\f]/g, " "),
+        evoChainLink: pokeFetchJson.species.evolution_chain.url,
+        allNames: pokeFetchJson.species.names
+    };
+}
+
+function pushEvoChainFetchToPokedexEvoChain(pokeEvoChainFetchJson) {
+    let evoChainObj = { id: pokeEvoChainFetchJson.evoChain.id };
+    let current = pokeEvoChainFetchJson.evoChain.chain;
+    let index = 0;
+
+    while (current) {
+        evoChainObj[`lv${index}`] = current.evolution_details?.[0]?.min_level ?? null
+        evoChainObj[`name${index}`] = current.species.name;
+        evoChainObj[`name${index}Url`] = namesToImageUrl(current.species.name);
+        if (current.evolves_to && current.evolves_to.length > 0) {
+            current = current.evolves_to[0];
+        } else {
+            current = null;
+        }
+        index++;
+    }
+    return evoChainObj;
+}
+
+function namesToImageUrl(name) {
+    for (let j = 0; j < pokedex.length; j++) {
+        if (pokedex[j].name === name) {
+            return pokedex[j].sprites;
+        }
+    }
+}
+
+
 function nextSetOfPokemon(nextOffset) {
     curOffset += nextOffset;
-    init(curOffset)
+    init(curOffset) /// TO BE UPDATED, possibly (!)
 }
 // function prevSetOfPokemon(nextOffset){
 //     if (curOffset -= nextOffset <= 0) {
@@ -99,38 +159,15 @@ function nextSetOfPokemon(nextOffset) {
 //     init(curOffset)
 // }
 
-function pushFetchToPokedex(curOffset) {
-    for (let i = curOffset; i < pokeFetchJson.length; i++) {
-        let pokeBaseData = pokeFetchJson[i];
-        if (pokedex.some(item => item.name === pokeBaseData.pokemon.name)) {
-            console.log(`Achtung: ${pokeBaseData.pokemon.name} ist schon im Pokedex`);
-            continue;
-        }
-        pokedex.push(jsonToPokedexData(pokeBaseData))
-    }
-    return pokedex;
-}
 
-function jsonToPokedexData(pokeBaseData) {
-    return {
-        id: pokeBaseData.pokemon.id,
-        name: pokeBaseData.pokemon.name,
-        sprites: pokeBaseData.pokemon.sprites.other["official-artwork"].front_default,
-        abilities: pokeBaseData.pokemon.abilities,
-        types: pokeBaseData.pokemon.types,
-        stats: pokeBaseData.pokemon.stats,
-        weight: pokeBaseData.pokemon.weight,
-        height: pokeBaseData.pokemon.height,
-        descr_EN: pokeBaseData.species.flavor_text_entries[0].flavor_text.replace(/[\n\f]/g, " "),
-        evoChainLink: pokeBaseData.species.evolution_chain.url,
-        allNames: pokeBaseData.species.names
-    };
-}
+
+
 
 function renderPokemon(curOffset) {
     for (let i = curOffset; i < pokedex.length; i++) { // works for +20,
         // but works NOT for -20
-        mainCardsRef.innerHTML += getMainCardsHtml(i);
+        let pokeEvoChainNr = parseInt(pokedex[i].evoChainLink.slice(42))
+        mainCardsRef.innerHTML += getMainCardsHtml(i, pokeEvoChainNr);
     }
 }
 
@@ -138,9 +175,56 @@ function renderPokeName(i) {
     return pokedex[i].name.charAt(0).toUpperCase() + pokedex[i].name.slice(1)
 }
 
-function renderPokeAbilities(i, n) {
-    let abilityName = pokedex[i].abilities[n].ability.name
-    return abilityName.charAt(0).toUpperCase() + abilityName.slice(1)
+function renderPokeAbilities(i) {
+    let abilities = '';
+    let length = pokedex[i].abilities.length
+    if (length > 2) {
+        for (let k = 0; k < 2; k++) {
+            abilities += getPokeAbilities(i, k);
+        }
+    } else {
+        for (let k = 0; k < length; k++) {
+            abilities += getPokeAbilities(i, k);
+        }
+    }
+    return abilities
+}
+
+function renderPokeEvoChain(pokeEvoChainNr) {
+    let chainId = pokedexEvoChain.find(item => item.id === pokeEvoChainNr);
+    let evoChainHtml = "";
+    for (let i in chainId) {
+        switch (i) {
+            case "name0":
+                evoChainHtml += `<th width="20%"><img src="${chainId.name0Url}" alt="${chainId.name0}" style="width:60px;"></th>`;
+                break;
+            case "lv1":
+                evoChainHtml += `<td width="16%">Lv.${chainId.lv1}</td>`
+                break;
+            case "name1":
+                evoChainHtml += `<th width="20%"><img src="${chainId.name1Url}" alt="${chainId.name1}" style="width:60px;"></th>`;
+                break;
+            case "lv2":
+                evoChainHtml += `<td width="16%">Lv.${chainId.lv2}</td>`
+                break;
+            case "name2":
+                evoChainHtml += `<th width="20%"><img src="${chainId.name2Url}" alt="${chainId.name2}" style="width:60px;"></th>`;
+                break;
+        
+            default:
+                break;
+        }
+        
+        // i % 2 === 0 ? console.log(`<th width="20%"><img src="${chainId.name0Url}" alt="" style="width:60px;"></th>`) : console.log(`<td width="16%">Lv.${chainId.lv1}</td>`);
+        // console.log(chainId[i]);
+
+    }
+    return evoChainHtml;
+    // <th width="20%"><img src="${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).name0Url}" alt="" style="width:60px;"></th>
+    // <td width="16%">Lv.${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).lv1}</td>
+    // <th width="20%"><img src="${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).name1Url}" alt="" style="width:60px;"></th>
+    // <td width="16%">Lv.${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).lv2}</td>
+    // <th width="20%"><img src="${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).name2Url}" alt="" style="width:60px;"></th>
 }
 
 function renderTypeImg(i) {
@@ -163,12 +247,13 @@ function findNumberOfTypesObj(i) {
     }
 }
 
-
-function openDialog(i) {
+async function openDialog(i, pokeEvoChainNr) {
     dialogRef.showModal();
-    dialogRef.innerHTML = getDialogCardHtml(i);
+    dialogRef.innerHTML = getDialogCardHtml(i, pokeEvoChainNr);
     toggleDialogStyling('hidden');
+
 }
+
 function closeDialog() {
     dialogRef.close();
     toggleDialogStyling('scroll');
@@ -191,67 +276,5 @@ function loadFromLocalStorage() {
         pokedex = pokedexLoadFromLocal;
     }
 }
-
-
-// async function fetchPokemonDetailsJson(i) {
-//     try {
-//         let id = i + 1;
-//         let pokemonDetailData = await fetch(BASE_URL + pokeSpecies + id)
-//         pokeDetailsFetchJson.push(await pokemonDetailData.json());
-
-//     } catch (error) {
-//         console.error("Console.error fetchPokemonDetailsJson message:", error)
-//     }
-//     return pokeDetailsFetchJson;
-// }
-
-
-
-
-// async function fetchPokemonBaseData(curOffset) {
-//     try {
-//         let allRequests = [];
-
-//         for (let i = 1 + curOffset; i <= 20 + curOffset; i++) {
-//             const pokeFetchArr = [
-//                 fetch(`https://pokeapi.co/api/v2/pokemon/${i}/`),
-//                 fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}/`)
-//             ];
-//             allRequests.push(Promise.allSettled(pokeFetchArr));
-//         }
-
-//         let results = await Promise.all(allRequests);
-        
-//         let errors =[];
-
-//         results.forEach((res, index) => {
-//             const id = index + 1 + curOffset;
-
-//             res.forEach((r,idx) => {
-//                 if (r.status === "rejected") {
-//                     errors.push(`Achtung: Fehler bei ID = ${id}, Request# ${idx + 1}: ${r.reason}`);
-//                 }
-//             });
-
-//             const fetchSuccessArray = res
-//                 .filter(obj => obj.status === "fulfilled")
-//                 .map(obj => obj.value);
-
-//             if (fetchSuccessArray.length === 0) {
-//                 console.warn(`Achtung: Keine Daten für ID = ${id}`);
-//                 return;
-//             }
-
-//             Promise.all(fetchSuccessArray.map(item => item.json()))
-//                 .then(data => pokeDetailsFetchJson.push(data))
-//                 .catch(err => console.error(`Fehler beim JSON-Parse für ID=${id}:`, err));
-//         });
-
-//     } catch (err) {
-//         console.error("message:", err);
-//     }
-
-//     console.log(pokeDetailsFetchJson);
-// }
 
 
