@@ -98,22 +98,22 @@ function getPokeAbilities(i, k) {
 }
 
 function getPokeEvoChainNameOne(chainId) {
-    return `<th width="20%"><img src="${chainId.name0Url}" alt="${chainId.name0}" style="width:60px;"></th>`;
+    return `<th width="20%"><img src="${chainId.name0Url}" alt="${chainId.name0}" title="${chainId.name0}" style="width:60px;"></th>`;
 }
 
 function getPokeEvoChainLevelOne(chainId) {
-    return `<td width="16%" class="no-bg">Lv.${chainId.lv1}</td>`;
+    return `<td width="20%" class="no-bg" title="Level up at Lv.${chainId.lv1}">\></td>`;
 }
 
 function getPokeEvoChainNameTwo(chainId) {
-    return `<th width="20%"><img src="${chainId.name1Url}" alt="${chainId.name1}" style="width:60px;"></th>`;
+    return `<th width="20%"><img src="${chainId.name1Url}" alt="${chainId.name1}" title="${chainId.name1}" style="width:60px;"></th>`;
 }
 
 function getPokeEvoChainLevelTwo(chainId) {
-    return `<td width="16%" class="no-bg">Lv.${chainId.lv2}</td>`;
+    return `<td width="20%" class="no-bg" title="Level up at Lv.${chainId.lv1}">\></td>`;
 }
 
 function getPokeEvoChainNameThree(chainId) {
-    return `<th width="20%"><img src="${chainId.name2Url}" alt="${chainId.name2}" style="width:60px;"></th>`;
+    return `<th width="20%"><img src="${chainId.name2Url}" alt="${chainId.name2}" title="${chainId.name2}" style="width:60px;"></th>`;
 }
 

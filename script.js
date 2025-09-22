@@ -6,15 +6,16 @@ const BASE_URL = 'https://pokeapi.co/api/v2/';
 const pokemon = 'pokemon/'; // max count 1302 (2025.09)
 const pokeSpecies = 'pokemon-species/';
 const pokeEvoChain = 'evolution-chain/'; // max count 541 (2025.09)
-let dialogRef = document.getElementById('dialog');
 let curOffset = 0;
+let evoOffset = 0;
 let limit = 20;
 let pokeFetchJson = [];
 let pokedex = [];
 let tempPokeEvoChainNr = [];
 let pokeEvoChainFetchJson = [];
-let pokedexEvoChain = [];
+let evoChain = [];
 
+let dialogRef = document.getElementById('dialog');
 let spinnerRef = document.getElementById('spinner')
 let mainCardsRef = document.getElementById('mainCards');
 
@@ -27,20 +28,21 @@ async function init(curOffset) {
     toggleLoadingSpinner();
     renderPokemon(curOffset);
     createTempPokeEvoChainNr(curOffset);
-    await fetchEvoChainJson(curOffset);
-    pushJsonToArray(curOffset, pokeEvoChainFetchJson, pokedexEvoChain);
+    await fetchEvoChainJson(evoOffset);
+    pushJsonToArray(evoOffset, pokeEvoChainFetchJson, evoChain);
+    evoOffset = tempPokeEvoChainNr.length;
 }
 
 
 // ---Prio1--- //
-// load prev
 // add next + prev Button in Modal
 //      based of the PokeNumber
 
 
 // ---Prio2--- //
-// check, if pokemon @pokedex + @pokedexDetails / localStorage (save to localStorage) -> before fetch new
 // save to local storage
+// // check, if pokemon @pokedex + @evoChain / localStorage (save to localStorage) -> before fetch new
+
 
 function toggleLoadingSpinner() {
     document.getElementById('spinner').classList.toggle('d_none');
@@ -67,7 +69,7 @@ async function fetchEvoChainJson() {
             pokeEvoChainFetchJson.push({ evoChain: evoChainJson })
         }
     } catch (error) {
-        console.error("fetch EvoChain:", error)
+        console.error("fetch evoChain:", error)
     }
     return pokeEvoChainFetchJson;
 }
@@ -91,18 +93,18 @@ function pushRawDataToJsonArr(pokemonJson, speciesJson) {
     });
 }
 
-function pushJsonToArray(curOffset, origin, destination) {
-    for (let i = curOffset; i < origin.length; i++) {
+function pushJsonToArray(offset, origin, destination) {
+    for (let i = offset; i < origin.length; i++) {
         if (destination === pokedex) {
             if (destination.some(item => item.name === origin[i].pokemon.name)) {
                 continue;
             }
             destination.push(jsonToPokedexData(origin[i]))
-        } else {
-            if (destination.some(item => item.name === origin[i].evoChain.chain.species.name)) {
+        } else if (destination === evoChain) {
+            if (destination.some(item => item.name0 === origin[i].evoChain.chain.species.name)) {
                 continue;
             }
-            destination.push(pushEvoChainFetchToPokedexEvoChain(origin[i]))
+            destination.push(pushEvoChainFetchToEvoChain(origin[i]))
         }
     }
     return destination;
@@ -126,8 +128,6 @@ function jsonToPokedexData(pokeFetchJson) {
 
 function createTempPokeEvoChainNr(curOffset) {
     let array = [];
-    console.log(pokemon.length);
-    
     for (let i = curOffset; i < (curOffset + limit); i++) {
         array.push(parseInt(pokedex[i].evoChainLink.slice(42)));
     }
@@ -136,7 +136,7 @@ function createTempPokeEvoChainNr(curOffset) {
     return tempPokeEvoChainNr;
 }
 
-function pushEvoChainFetchToPokedexEvoChain(pokeEvoChainFetchJson) {
+function pushEvoChainFetchToEvoChain(pokeEvoChainFetchJson) {
     let evoChainObj = { id: pokeEvoChainFetchJson.evoChain.id };
     let current = pokeEvoChainFetchJson.evoChain.chain;
     let index = 0;
@@ -159,29 +159,27 @@ function namesToImageUrl(name) {
     }
 }
 
-
-function nextSetOfPokemon(nextOffset) {
-    curOffset += nextOffset;
-
-    init(curOffset) /// TO BE UPDATED, possibly (!)
+function nextSetOfPokemon(offset) {
+    curOffset += offset;
+    document.getElementById('btn_prev').disabled = false;
+    init(curOffset)                                         // TO BE UPDATED (!) // ATTENTION: when previous + next: double fetch
 }
-// function prevSetOfPokemon(nextOffset){
-//     if (curOffset -= nextOffset <= 0) {
-//         curOffset = 0;
-//         prevButton = document.getElementById('btn_prev').disabled = true;
-//     } else {
-//         curOffset -= nextOffset;
-//     };
-//     init(curOffset)
-// }
 
-
-
-
+function prevSetOfPokemon(offset){
+    curOffset -= offset;
+    if (curOffset === 0) {
+        document.getElementById('btn_prev').disabled = true;
+    }
+    if (curOffset < 0){
+        curOffset = 0;
+        return;
+    }
+    mainCardsRef.innerHTML = '';
+    renderPokemon(curOffset)
+}
 
 function renderPokemon(curOffset) {
-    for (let i = curOffset; i < pokedex.length; i++) { // works for +20,
-        // but works NOT for -20
+    for (let i = curOffset; i < (curOffset + limit); i++) { 
         let pokeEvoChainNr = parseInt(pokedex[i].evoChainLink.slice(42))
         mainCardsRef.innerHTML += getMainCardsHtml(i, pokeEvoChainNr);
     }
@@ -207,7 +205,7 @@ function renderPokeAbilities(i) {
 }
 
 function renderPokeEvoChain(pokeEvoChainNr) {
-    let chainId = pokedexEvoChain.find(item => item.id === pokeEvoChainNr);
+    let chainId = evoChain.find(item => item.id === pokeEvoChainNr);
     let evoChainHtml = "";
     for (let i in chainId) {
         switch (i) {
@@ -273,15 +271,15 @@ function toggleDialogStyling(scrollBehaviour) {
 }
 
 ///////
-function saveToLocalStorage() {
-    localStorage.setItem('pokedex', JSON.stringify(pokedex))
-}
+// function saveToLocalStorage() {
+//     localStorage.setItem('pokedex', JSON.stringify(pokedex))
+// }
 
-function loadFromLocalStorage() {
-    let pokedexLoadFromLocal = JSON.parse(localStorage.getItem('pokedex'))
-    if (pokedexLoadFromLocal !== null) {
-        pokedex = pokedexLoadFromLocal;
-    }
-}
+// function loadFromLocalStorage() {
+//     let pokedexLoadFromLocal = JSON.parse(localStorage.getItem('pokedex'))
+//     if (pokedexLoadFromLocal !== null) {
+//         pokedex = pokedexLoadFromLocal;
+//     }
+// }
 
 
