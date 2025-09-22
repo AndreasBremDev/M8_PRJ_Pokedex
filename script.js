@@ -126,11 +126,7 @@ function pushEvoChainFetchToPokedexEvoChain(pokeEvoChainFetchJson) {
         evoChainObj[`lv${index}`] = current.evolution_details?.[0]?.min_level ?? null
         evoChainObj[`name${index}`] = current.species.name;
         evoChainObj[`name${index}Url`] = namesToImageUrl(current.species.name);
-        if (current.evolves_to && current.evolves_to.length > 0) {
-            current = current.evolves_to[0];
-        } else {
-            current = null;
-        }
+        current.evolves_to && current.evolves_to.length > 0 ? current = current.evolves_to[0] : current = null;
         index++;
     }
     return evoChainObj;
@@ -196,35 +192,26 @@ function renderPokeEvoChain(pokeEvoChainNr) {
     for (let i in chainId) {
         switch (i) {
             case "name0":
-                evoChainHtml += `<th width="20%"><img src="${chainId.name0Url}" alt="${chainId.name0}" style="width:60px;"></th>`;
+                evoChainHtml += getPokeEvoChainNameOne(chainId);
                 break;
             case "lv1":
-                evoChainHtml += `<td width="16%">Lv.${chainId.lv1}</td>`
+                evoChainHtml += getPokeEvoChainLevelOne(chainId);
                 break;
             case "name1":
-                evoChainHtml += `<th width="20%"><img src="${chainId.name1Url}" alt="${chainId.name1}" style="width:60px;"></th>`;
+                evoChainHtml += getPokeEvoChainNameTwo(chainId);
                 break;
             case "lv2":
-                evoChainHtml += `<td width="16%">Lv.${chainId.lv2}</td>`
+                evoChainHtml += getPokeEvoChainLevelTwo(chainId);
                 break;
             case "name2":
-                evoChainHtml += `<th width="20%"><img src="${chainId.name2Url}" alt="${chainId.name2}" style="width:60px;"></th>`;
+                evoChainHtml += getPokeEvoChainNameThree(chainId);
                 break;
         
             default:
                 break;
         }
-        
-        // i % 2 === 0 ? console.log(`<th width="20%"><img src="${chainId.name0Url}" alt="" style="width:60px;"></th>`) : console.log(`<td width="16%">Lv.${chainId.lv1}</td>`);
-        // console.log(chainId[i]);
-
     }
     return evoChainHtml;
-    // <th width="20%"><img src="${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).name0Url}" alt="" style="width:60px;"></th>
-    // <td width="16%">Lv.${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).lv1}</td>
-    // <th width="20%"><img src="${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).name1Url}" alt="" style="width:60px;"></th>
-    // <td width="16%">Lv.${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).lv2}</td>
-    // <th width="20%"><img src="${pokedexEvoChain.find(item=>item.id===pokeEvoChainNr).name2Url}" alt="" style="width:60px;"></th>
 }
 
 function renderTypeImg(i) {

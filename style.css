@@ -8,8 +8,27 @@
 
 :root {
     --bg-general: #f6f8fc;
-    --bg-card: #ffffff;
-    --bg-card-hover: #f1f2f3;
+    --bg-card: hsl(0, 0%, 100%);
+    --bg-card-hover: hsl(0, 0%, 80%);
+
+    --bg-normal-1: hsl(208, 8%, 80%);
+    --bg-fighting-2: hsl(342, 59%, 73%);
+    --bg-flying-3: hsl(342, 59%, 73%);
+    --bg-poison-4: hsl(281, 46%, 80%);
+    --bg-ground-5: hsl(21, 66%, 76%);
+    --bg-rock-6: hsl(45, 33%, 86%);
+    --bg-bug-7: hsl(80, 61%, 67%);
+    --bg-ghost-8: hsl(225, 36%, 70%);
+    --bg-steel-9: hsl(197, 29%, 69%);
+    --bg-fire-10: hsl(25, 100%, 87%);
+    --bg-water-11: hsl(211, 62%, 78%);
+    --bg-grass-12: hsl(114, 42%, 75%);
+    --bg-electric-13: hsl(49, 89%, 80%);
+    --bg-psychic-14: hsl(356, 93%, 91%);
+    --bg-ice-15: hsl(171, 48%, 83%);
+    --bg-dragon-16: hsl(208, 89%, 60%);
+    --bg-dark-17: hsl(261, 9%, 56%);
+    --bg-fairy-18: hsl(304, 71%, 94%);
 
     --normal-1: hsl(208, 8%, 60%);
     --fighting-2: hsl(342, 59%, 53%);
@@ -29,34 +48,16 @@
     --dragon-16: hsl(208, 89%, 40%);
     --dark-17: hsl(261, 9%, 36%);
     --fairy-18: hsl(304, 71%, 74%);
-    --bg-normal-1: hsl(208, 8%, 80%);
-    --bg-fighting-2: hsl(342, 59%, 73%);
-    --bg-flying-3: hsl(342, 59%, 73%);
-    --bg-poison-4: hsl(281, 46%, 80%);
-    --bg-ground-5: hsl(21, 66%, 76%);
-    --bg-rock-6: hsl(45, 33%, 86%);
-    --bg-bug-7: hsl(80, 61%, 67%);
-    --bg-ghost-8: hsl(225, 36%, 70%);
-    --bg-steel-9: hsl(197, 29%, 69%);
-    --bg-fire-10: hsl(25, 100%, 87%);
-    --bg-water-11: hsl(211, 62%, 78%);
-    --bg-grass-12: hsl(114, 42%, 75%);
-    --bg-electric-13: hsl(49, 89%, 80%);
-    --bg-psychic-14: hsl(356, 93%, 91%);
-    --bg-ice-15: hsl(171, 48%, 83%);
-    --bg-dragon-16: hsl(208, 89%, 60%);
-    --bg-dark-17: hsl(261, 9%, 56%);
-    --bg-fairy-18: hsl(304, 71%, 94%);
 }
 
 body {
     background-color: var(--bg-general);
 }
 
-header,
+nav,
+.flex_row,
 #mainCards,
 .mainCards {
-    margin: 5rem auto;
     width: min(90%, 1440px);
 }
 
@@ -65,11 +66,32 @@ header,
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(156px, 100%), 1fr));
     gap: 2rem;
+    margin: 5rem auto;
 }
 
 .d_none {
     display: none;
 }
+
+.btn-main-container {
+    width: min(45%, 192px)
+}
+
+.btn-main {
+    background-color: var(--bg-card);
+    height: 100%;
+    width: 100%;
+    clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1.5rem;
+}
+
+.btn-main:hover {
+    background-color: var(--bg-card-hover);
+}
+
 
 /* CARDS */
 
@@ -191,8 +213,7 @@ header,
 .flex_row {
     display: flex;
     justify-content: space-between;
-    margin: 5rem auto;
-    width: min(90%, 1440px);
+    margin: 1rem auto;
 }
 
 .pokeType {
@@ -290,6 +311,10 @@ header,
 
 .mainCard td.clipOther {
     clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
+}
+
+.no-bg {
+    background-color: inherit;
 }
 
 footer {
