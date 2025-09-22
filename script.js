@@ -10,8 +10,9 @@ let dialogRef = document.getElementById('dialog');
 let curOffset = 0;
 let limit = 20;
 let pokeFetchJson = [];
-let pokeEvoChainFetchJson = []
 let pokedex = [];
+let tempPokeEvoChainNr = [];
+let pokeEvoChainFetchJson = [];
 let pokedexEvoChain = [];
 
 let spinnerRef = document.getElementById('spinner')
@@ -25,7 +26,9 @@ async function init(curOffset) {
     pushJsonToArray(curOffset, pokeFetchJson, pokedex);
     toggleLoadingSpinner();
     renderPokemon(curOffset);
-    pushJsonToArray(curOffset, pokeEvoChainFetchJson, pokedexEvoChain)
+    createTempPokeEvoChainNr(curOffset);
+    await fetchEvoChainJson(curOffset);
+    pushJsonToArray(curOffset, pokeEvoChainFetchJson, pokedexEvoChain);
 }
 
 
@@ -36,10 +39,8 @@ async function init(curOffset) {
 
 
 // ---Prio2--- //
-// check, if pokemon @pokedex + @pokedexDetails -> before fetch new
+// check, if pokemon @pokedex + @pokedexDetails / localStorage (save to localStorage) -> before fetch new
 // save to local storage
-// style next/prev button
-//      cursor:pointer;
 
 function toggleLoadingSpinner() {
     document.getElementById('spinner').classList.toggle('d_none');
@@ -52,32 +53,41 @@ async function fetchPokemonJson(curOffset) {
             await fetchAndPushToArr(id);
         }
     } catch (error) {
-        console.error("fetch Pokemon + Species + EvoChain:", error)
+        console.error("fetch Pokemon + Species:", error)
     }
     return pokeFetchJson;
 }
 
-async function fetchAndPushToArr(id) {
-    let [pokemonRes, speciesRes, evoChainRes] = await Promise.all([
-        fetch(BASE_URL + pokemon + id),
-        fetch(BASE_URL + pokeSpecies + id),
-        fetch(BASE_URL + pokeEvoChain + id) ///// ERROR: can't load imagesURL, since according Pokemon are not yet loaded (!)
-    ]);
-    let [pokemonJson, speciesJson, evoChainJson] = await Promise.all([
-        pokemonRes.json(),
-        speciesRes.json(),
-        evoChainRes.json()
-    ]);
-    pushRawDataToJsonArr(pokemonJson, speciesJson, evoChainJson);
+async function fetchEvoChainJson() {
+    try {
+        for (let i = 0; i < tempPokeEvoChainNr.length; i++) {
+            let id = tempPokeEvoChainNr[i];
+            let evoChainRes = await fetch(BASE_URL + pokeEvoChain + id);
+            let evoChainJson = await evoChainRes.json()
+            pokeEvoChainFetchJson.push({ evoChain: evoChainJson })
+        }
+    } catch (error) {
+        console.error("fetch EvoChain:", error)
+    }
+    return pokeEvoChainFetchJson;
 }
 
-function pushRawDataToJsonArr(pokemonJson, speciesJson, evoChainJson) {
+async function fetchAndPushToArr(id) {
+    let [pokemonRes, speciesRes] = await Promise.all([
+        fetch(BASE_URL + pokemon + id),
+        fetch(BASE_URL + pokeSpecies + id)
+    ]);
+    let [pokemonJson, speciesJson] = await Promise.all([
+        pokemonRes.json(),
+        speciesRes.json()
+    ]);
+    pushRawDataToJsonArr(pokemonJson, speciesJson);
+}
+
+function pushRawDataToJsonArr(pokemonJson, speciesJson) {
     pokeFetchJson.push({
         pokemon: pokemonJson,
         species: speciesJson
-    });
-    pokeEvoChainFetchJson.push({
-        evoChain: evoChainJson
     });
 }
 
@@ -98,9 +108,6 @@ function pushJsonToArray(curOffset, origin, destination) {
     return destination;
 }
 
-
-
-
 function jsonToPokedexData(pokeFetchJson) {
     return {
         id: pokeFetchJson.pokemon.id,
@@ -115,6 +122,18 @@ function jsonToPokedexData(pokeFetchJson) {
         evoChainLink: pokeFetchJson.species.evolution_chain.url,
         allNames: pokeFetchJson.species.names
     };
+}
+
+function createTempPokeEvoChainNr(curOffset) {
+    let array = [];
+    console.log(pokemon.length);
+    
+    for (let i = curOffset; i < (curOffset + limit); i++) {
+        array.push(parseInt(pokedex[i].evoChainLink.slice(42)));
+    }
+    let identSet = new Set(array);
+    tempPokeEvoChainNr = [...identSet];
+    return tempPokeEvoChainNr;
 }
 
 function pushEvoChainFetchToPokedexEvoChain(pokeEvoChainFetchJson) {
@@ -143,6 +162,7 @@ function namesToImageUrl(name) {
 
 function nextSetOfPokemon(nextOffset) {
     curOffset += nextOffset;
+
     init(curOffset) /// TO BE UPDATED, possibly (!)
 }
 // function prevSetOfPokemon(nextOffset){
@@ -206,7 +226,7 @@ function renderPokeEvoChain(pokeEvoChainNr) {
             case "name2":
                 evoChainHtml += getPokeEvoChainNameThree(chainId);
                 break;
-        
+
             default:
                 break;
         }

@@ -110,7 +110,7 @@ function getPokeEvoChainNameTwo(chainId) {
 }
 
 function getPokeEvoChainLevelTwo(chainId) {
-    return `<td width="16%">Lv.${chainId.lv2}</td>`;
+    return `<td width="16%" class="no-bg">Lv.${chainId.lv2}</td>`;
 }
 
 function getPokeEvoChainNameThree(chainId) {

@@ -54,7 +54,6 @@ body {
     background-color: var(--bg-general);
 }
 
-nav,
 .flex_row,
 #mainCards,
 .mainCards {
@@ -66,7 +65,7 @@ nav,
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(156px, 100%), 1fr));
     gap: 2rem;
-    margin: 5rem auto;
+    margin: 2rem auto;
 }
 
 .d_none {
@@ -90,6 +89,11 @@ nav,
 
 .btn-main:hover {
     background-color: var(--bg-card-hover);
+}
+
+.btn-main[disabled]{
+    background-color: var(--bg-general);
+    cursor: auto;
 }
 
 
@@ -261,7 +265,7 @@ nav,
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
-    width: min(80vw, 1440px);
+    width: min(100%, 1440px);
     border: none;
     outline: none;
     overflow-y: auto;
@@ -284,6 +288,7 @@ nav,
 
 .dialog.opened {
     opacity: 1;
+
 }
 
 .dialog.opened::backdrop {
@@ -297,7 +302,7 @@ nav,
 }
 
 .mainCard table {
-    width: 80%;
+    width: 90%;
     border-spacing: 12px;
     margin: auto;
     text-align: center;
@@ -314,7 +319,7 @@ nav,
 }
 
 .no-bg {
-    background-color: inherit;
+    background-color: rgba(255,255,255,0) !important;
 }
 
 footer {
