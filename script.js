@@ -9,6 +9,7 @@ const pokeEvoChain = 'evolution-chain/'; // max count 541 (2025.09)
 let curOffset = 0;
 let evoOffset = 0;
 let limit = 20;
+let more = false;
 let pokeFetchJson = [];
 let pokedex = [];
 let tempPokeEvoChainNr = [];
@@ -20,13 +21,13 @@ let spinnerRef = document.getElementById('spinner')
 let mainCardsRef = document.getElementById('mainCards');
 
 
-async function init(curOffset) {
+async function init(curOffset, more) {
     mainCardsRef.innerHTML = '';
     toggleLoadingSpinner();
     await fetchPokemonJson(curOffset);
     pushJsonToArray(curOffset, pokeFetchJson, pokedex);
     toggleLoadingSpinner();
-    renderPokemon(curOffset);
+    renderPokemon(curOffset, more = null);
     createTempPokeEvoChainNr(curOffset);
     await fetchEvoChainJson(evoOffset);
     pushJsonToArray(evoOffset, pokeEvoChainFetchJson, evoChain);
@@ -35,6 +36,7 @@ async function init(curOffset) {
 
 
 // ---Prio1--- //
+// more button
 // add next + prev Button in Modal
 //      based of the PokeNumber
 
@@ -159,29 +161,17 @@ function namesToImageUrl(name) {
     }
 }
 
-function nextSetOfPokemon(offset) {
-    curOffset += offset;
-    document.getElementById('btn_prev').disabled = false;
-    init(curOffset)                                         // TO BE UPDATED (!) // ATTENTION: when previous + next: double fetch
-}
-
-function prevSetOfPokemon(offset){
-    curOffset -= offset;
-    if (curOffset === 0) {
-        document.getElementById('btn_prev').disabled = true;
-    }
-    if (curOffset < 0){
-        curOffset = 0;
-        return;
-    }
-    mainCardsRef.innerHTML = '';
-    renderPokemon(curOffset)
-}
-
-function renderPokemon(curOffset) {
-    for (let i = curOffset; i < (curOffset + limit); i++) { 
-        let pokeEvoChainNr = parseInt(pokedex[i].evoChainLink.slice(42))
-        mainCardsRef.innerHTML += getMainCardsHtml(i, pokeEvoChainNr);
+function renderPokemon(curOffset, more = null) {
+    if (!more) {
+        for (let i = curOffset; i < (curOffset + limit); i++) {
+            let pokeEvoChainNr = parseInt(pokedex[i].evoChainLink.slice(42))
+            mainCardsRef.innerHTML += getMainCardsHtml(i, pokeEvoChainNr);
+        }
+    } else {
+        for (let i = 0; i < (curOffset + limit); i++) {
+            let pokeEvoChainNr = parseInt(pokedex[i].evoChainLink.slice(42))
+            mainCardsRef.innerHTML += getMainCardsHtml(i, pokeEvoChainNr);
+        }
     }
 }
 
@@ -269,6 +259,52 @@ function toggleDialogStyling(scrollBehaviour) {
     document.body.style.overflowY = scrollBehaviour;
     dialogRef.querySelectorAll('.pokeType').forEach(img => { img.classList.toggle('pokeTypeModal') })
 }
+
+function nextSetOfPokemon(offset) {
+    curOffset += offset;
+    document.getElementById('btn_prev').disabled = false;
+    init(curOffset)                                         // TO BE UPDATED (!) // ATTENTION: when next + previous + next: double fetch
+}
+
+function prevSetOfPokemon(offset) {
+    curOffset -= offset;
+    if (curOffset === 0) {
+        document.getElementById('btn_prev').disabled = true;
+    }
+    if (curOffset < 0) {
+        curOffset = 0;
+        return;
+    }
+    mainCardsRef.innerHTML = '';
+    renderPokemon(curOffset)
+}
+
+async function showPlusTwentyMore(offset) {
+    curOffset += offset;
+    mainCardsRef.innerHTML = '';
+    toggleLoadingSpinner();
+    await fetchPokemonJson(curOffset);
+    pushJsonToArray(curOffset, pokeFetchJson, pokedex);
+    toggleLoadingSpinner();
+    renderPokemon(curOffset, true);
+    createTempPokeEvoChainNr(curOffset);
+    await fetchEvoChainJson(evoOffset);
+    pushJsonToArray(evoOffset, pokeEvoChainFetchJson, evoChain);
+    evoOffset = tempPokeEvoChainNr.length;
+}
+
+// async function init(curOffset) {
+//     mainCardsRef.innerHTML = '';
+//     toggleLoadingSpinner();
+//     await fetchPokemonJson(curOffset);
+//     pushJsonToArray(curOffset, pokeFetchJson, pokedex);
+//     toggleLoadingSpinner();
+//     renderPokemon(curOffset);
+//     createTempPokeEvoChainNr(curOffset);
+//     await fetchEvoChainJson(evoOffset);
+//     pushJsonToArray(evoOffset, pokeEvoChainFetchJson, evoChain);
+//     evoOffset = tempPokeEvoChainNr.length;
+// }
 
 ///////
 // function saveToLocalStorage() {

@@ -16,18 +16,18 @@
 
 <body onload="init(curOffset)">
     <header>
-        <nav class="flex_row">
+        <nav class="flex_row justify_between">
             LOGO - SEARCHBAR 🔍
         </nav>
     </header>
     <main>
-        
-        <div class="flex_row">
+
+        <div class="flex_row justify_between">
             <div class="container btn-main-container">
-            <button onclick="prevSetOfPokemon(20)" id="btn_prev" class="btn-main" disabled>previous</button>
-            </div> 
+                <button onclick="prevSetOfPokemon(20)" id="btn_prev" class="btn-main" disabled>previous</button>
+            </div>
             <div class="container btn-main-container">
-            <button onclick="nextSetOfPokemon(20)" class="btn-main">next</button>
+                <button onclick="nextSetOfPokemon(20)" class="btn-main">next</button>
             </div>
         </div>
 
@@ -36,10 +36,15 @@
         </div>
 
         <div id="mainCards"></div>
-        
+
         <dialog id="dialog" class="dialog" onclick="if(event.target === this){ closeDialog(); }">
         </dialog>
 
+        <div class="flex_row center">
+            <div class="container btn-main-container">
+                <button onclick="showPlusTwentyMore(20)" id="btn_more" class="btn-main">more</button>
+            </div>
+        </div>
 
     </main>
     <footer>

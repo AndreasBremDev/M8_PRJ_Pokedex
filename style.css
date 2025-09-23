@@ -96,8 +96,27 @@ body {
     cursor: auto;
 }
 
+.center {
+    justify-content: center;
+}
+
+.justify_between {
+    justify-content: space-between;
+}
+
+
 
 /* CARDS */
+
+.flex_col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex_row {
+    display: flex;
+    margin: 1rem auto;
+}
 
 .container {
     filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
@@ -209,16 +228,6 @@ body {
     margin-bottom: 16px;
 }
 
-.flex_col {
-    display: flex;
-    flex-direction: column;
-}
-
-.flex_row {
-    display: flex;
-    justify-content: space-between;
-    margin: 1rem auto;
-}
 
 .pokeType {
     display: inline-block;
