@@ -8,39 +8,44 @@
     <title>Pokedex</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/media.css">
 
     <script src="script.js" defer></script>
     <script src="./scripts/templates.js" defer></script>
+    <script src="./scripts/rendering.js" defer></script>
 
 </head>
 
-<body onload="init(curOffset)">
+<body onload="init()">
     <header>
-        <nav class="flex_row justify_between">
+        <nav class="flex margin-and-width justify_between">
             LOGO - SEARCHBAR 🔍
         </nav>
     </header>
+    <div class="loading-Spinner d_none" id="spinner">
+        <img src="./assets/icon/icon.svg" alt="">
+    </div>
     <main>
 
-        <div class="flex_row justify_between">
+        <div class="flex margin-and-width justify_between">
             <div class="container btn-main-container">
-                <button onclick="prevSetOfPokemon(20)" id="btn_prev" class="btn-main" disabled>previous</button>
+                <button onclick="prevSetOfPokemon(20)" id="btn_prev" class="btn-main" disabled>previous 20</button>
             </div>
             <div class="container btn-main-container">
-                <button onclick="nextSetOfPokemon(20)" class="btn-main">next</button>
+                <button onclick="nextSetOfPokemon(20)" class="btn-main">next 20</button>
             </div>
-        </div>
-
-        <div class="loading-Spinner d_none" id="spinner">
-            <img src="./assets/icon/icon.svg" alt="">
         </div>
 
         <div id="mainCards"></div>
 
-        <dialog id="dialog" class="dialog" onclick="if(event.target === this){ closeDialog(); }">
+        <dialog id="dialog" class="dialog" onclick="if(event.target === this){closeDialog();}">
         </dialog>
 
-        <div class="flex_row center">
+        <dialog id="impressum" class="dialog" onclick="if(event.target === this){closeDialog();}">
+        </dialog>
+
+
+        <div class="flex margin-and-width center">
             <div class="container btn-main-container">
                 <button onclick="showPlusTwentyMore(20)" id="btn_more" class="btn-main">more</button>
             </div>
@@ -48,7 +53,24 @@
 
     </main>
     <footer>
-        IMPRESSUM
+        <span onclick="openImpressum();toggleDialogStyling('hidden')"><a>IMPRESSUM</a></span>
+        <div>(c) 2025 AndreasBremDev </div>
+        <div class="social">
+            <a href="https://www.facebook.com/andreas.steinig.1/" target="_blank">
+                <img src="./assets/icon/facebook-brands.svg" alt="Facebook-Symbol">
+                <span class="social-name">facebook</span>
+            </a>
+            <div>|</div>
+            <a href="https://www.linkedin.com/in/andreas-brem-473853b4/" target="_blank">
+                <img src="./assets/icon/linkedin-brands.svg" alt="LinkedIn-Symbol">
+                <span class="social-name">linkedIn</span>
+            </a>
+            <div>|</div>
+            <a href="https://github.com/AndreasBremDev" target="_blank">
+            <img src="./assets/icon/github-brands.svg" alt="GitHub-Symbol">
+            <span class="social-name">GitHub</span>
+            </a>
+        </div>
     </footer>
 </body>
 

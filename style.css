@@ -30,7 +30,7 @@
     --bg-dark-17: hsl(261, 9%, 56%);
     --bg-fairy-18: hsl(304, 71%, 94%);
 
-    --normal-1: hsl(208, 8%, 60%);
+    /* --normal-1: hsl(208, 8%, 60%);
     --fighting-2: hsl(342, 59%, 53%);
     --flying-3: hsl(220, 54%, 72%);
     --poison-4: hsl(281, 46%, 60%);
@@ -47,14 +47,73 @@
     --ice-15: hsl(171, 48%, 63%);
     --dragon-16: hsl(208, 89%, 40%);
     --dark-17: hsl(261, 9%, 36%);
-    --fairy-18: hsl(304, 71%, 74%);
+    --fairy-18: hsl(304, 71%, 74%); */
 }
 
 body {
     background-color: var(--bg-general);
+    min-height: 100vh;
+    position: relative;
 }
 
-.flex_row,
+main {
+    margin-bottom: 100px;
+}
+a {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.d_none {
+    display: none;
+}
+
+.container {
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
+}
+
+.btn-main-container {
+    width: min(45%, 192px)
+}
+
+.btn-main {
+    background-color: var(--bg-card);
+    height: 2rem;
+    width: 100%;
+    clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-main:hover {
+    background-color: var(--bg-card-hover);
+}
+
+.btn-main[disabled] {
+    background-color: var(--bg-general);
+    cursor: auto;
+}
+
+.w16perc {
+    width: 16%;
+}
+
+.w80perc {
+    width: 80%;
+}
+
+.clip9 {
+    clip-path: polygon(9% 0%, 100% 0%, 100% 50%, 91% 100%, 0 100%, 0 50%) !important;
+}
+
+.btn-main img {
+    height: 2rem;
+}
+
+footer,
+.margin-and-width,
 #mainCards,
 .mainCards {
     width: min(90%, 1440px);
@@ -68,58 +127,30 @@ body {
     margin: 2rem auto;
 }
 
-.d_none {
-    display: none;
-}
-
-.btn-main-container {
-    width: min(45%, 192px)
-}
-
-.btn-main {
-    background-color: var(--bg-card);
-    height: 100%;
-    width: 100%;
-    clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
-    outline: none;
-    border: none;
-    cursor: pointer;
-    line-height: 1.5rem;
-}
-
-.btn-main:hover {
-    background-color: var(--bg-card-hover);
-}
-
-.btn-main[disabled]{
-    background-color: var(--bg-general);
-    cursor: auto;
-}
-
 .center {
+    justify-content: center;
+    align-items: center;
+}
+.j_c_center {
     justify-content: center;
 }
 
 .justify_between {
     justify-content: space-between;
 }
-
-
-
-/* CARDS */
-
-.flex_col {
+.flex {
     display: flex;
+}
+.flex_col {
     flex-direction: column;
 }
 
-.flex_row {
-    display: flex;
+.margin-and-width {
     margin: 1rem auto;
 }
 
-.container {
-    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
+.flex_end {
+    align-items: flex-end;
 }
 
 .mainCard {
@@ -237,36 +268,6 @@ body {
     clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
 }
 
-
-
-/* LOADING SPINNER */
-
-.loading-Spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-}
-
-.loading-Spinner.d_none {
-    display: none;
-}
-
-.loading-Spinner img {
-    height: 100px;
-    animation: spin 1s infinite linear;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-
-/* DIALOG */
-
-
 .dialog {
     /* closed */
     z-index: 2;
@@ -297,7 +298,6 @@ body {
 
 .dialog.opened {
     opacity: 1;
-
 }
 
 .dialog.opened::backdrop {
@@ -323,13 +323,54 @@ body {
     clip-path: polygon(9% 0%, 100% 0%, 100% 50%, 91% 100%, 0 100%, 0 50%);
 }
 
+.line-height {
+    line-height: inherit !important;
+}
+
 .mainCard td.clipOther {
     clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
 }
 
 .no-bg {
-    background-color: rgba(255,255,255,0) !important;
+    background-color: rgba(255, 255, 255, 0) !important;
 }
+
+
+
+
+/* LOADING SPINNER */
+
+.loading-Spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-general);
+    flex: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.loading-Spinner.d_none {
+    display: none;
+}
+
+.loading-Spinner img {
+    height: 100px;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* FOOTER */
 
 footer {
     height: 80px;
@@ -337,5 +378,22 @@ footer {
     text-align: center;
     position: fixed;
     left: 0;
+    width: 100%;
     bottom: 0;
+    color: #000;
+}
+
+footer .social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+footer img {
+    height: 16px;
+    transform: translateY(2px);
+}
+
+footer a:hover {
+    color: #fff;
 }
