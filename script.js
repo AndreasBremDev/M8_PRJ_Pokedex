@@ -19,8 +19,8 @@ let impressumRef = document.getElementById('impressum');
 let myInterval;
 
 // FETCHEN
-// neu: beim ersten Mal bis z.B. i < 40 Laden
-// neu: if (i <20) fetch + push array
+// done: beim ersten Mal bis z.B. i < 40 Laden
+// done: if (i <20) fetch + push array
 // neu: wenn (i>=20), dann fetch + push array + render (setInterval) + fetch weitere 20.
 // was passiert, wenn weitere 20 geladen, bzw. was wenn next-btn / more-btn, -> z.B. weitere 20 Laden
 // ODER ALTERNATIV: 40 fetchen, aber nur 20 anzeigen
@@ -69,45 +69,56 @@ function stopInterval() {
     clearInterval(myInterval);
 }
 
-function nextSetOfPokemon() {
-    let curRendered = getCurRenderedCount();
+async function nextSetOfPokemon() {
+    let lastId = parseInt(PokeIdOnScreen('last'));
+    console.log('from: ', lastId);
+    to = lastId + 20;
+    console.log('to: ', to);
     document.getElementById('btn_prev').disabled = false;
-    to = curRendered + 20;
     mainCardsRef.innerHTML = '';
-    renderPokemon (curRendered, to);
-    // init(curOffset)                                         // TO BE UPDATED (!) // ATTENTION: when next + previous + next: double fetch
+    renderPokemon(lastId, to);
+    console.log('Pokedex.length: ', pokedex.length);
+    if (to === pokedex.length) {
+        await fetchPokemonJson(pokedex.length, pokedex.length + 40)
+    }// TO BE UPDATED (!) // ATTENTION: when next + previous + next: double fetch
 }
 
-// function prevSetOfPokemon(offset) {
-//     curOffset -= offset;
-//     if (curOffset === 0) {
-//         document.getElementById('btn_prev').disabled = true;
-//     }
-//     if (curOffset < 0) {
-//         curOffset = 0;
-//         return;
-//     }
-//     mainCardsRef.innerHTML = '';
-//     renderPokemon(curOffset)
-// }
+function prevSetOfPokemon() {
+    let firstId = parseInt(PokeIdOnScreen('first'))
+    if (firstId === 21 || firstId === 10021) {
+        document.getElementById('btn_prev').disabled = true;
+    }
+    mainCardsRef.innerHTML = '';
+
+    renderPokemon(firstId - 21, firstId - 1)
+}
+
+function PokeIdOnScreen(firstLast) {
+    let lastCard = document.querySelector(`#mainCards > div:${firstLast}-child`);
+    let Id = lastCard.getAttribute('data-pokeId');
+    return Id
+}
 
 async function showPlusTwentyMore() {
-    let curRendered = getCurRenderedCount();
-    to = curRendered + 20;
-    renderPokemon (curRendered, to);
-    curRendered = getCurRenderedCount();
-    if (curRendered === pokedex.length) {
-        // await fetchPokemonJson();
+    // let firstId = parseInt(PokeIdOnScreen('first'))
+    let lastId = parseInt(PokeIdOnScreen('last'));
+    from = lastId
+    to = lastId + 20;
+        console.log('from: ', from);
+    console.log('to: ', to);
+    console.log('Pokedex.length: ', pokedex.length);
+    // no emptying: mainCardsRef.innerHTML = '';
+    renderPokemon(from, to);
+    if (to === pokedex.length) {
+        await fetchPokemonJson(pokedex.length, pokedex.length + 40)
     }
-    // comparePokedexWithPokeFetchJson()
-    // init(curOffset, true);
 }
 
 async function prevNextPokemon(i, event) {
     if (i > pokedex.length - 1) {
         i = 0;
     } else if (i < 0) {
-        i = pokedex.length -1;
+        i = pokedex.length - 1;
     }
     await openDialog(i, event)
 }
@@ -133,7 +144,7 @@ function toggleDialogStyling(scrollBehaviour) {
     dialogRef.querySelectorAll('.pokeType').forEach(img => { img.classList.toggle('pokeTypeModal') })
 }
 
-function openImpressum(){
+function openImpressum() {
     impressumRef.showModal();
     impressumRef.innerHTML = getImpressumHtml();
 }
@@ -142,15 +153,15 @@ function getCurRenderedCount() {
     return document.getElementsByClassName('mainCard').length;
 }
 
-function comparePokedexWithPokeFetchJson(){
-    
+function comparePokedexWithPokeFetchJson() {
+
 }
 
 /**** FETCHes to ARRAYs ****/
 
 async function fetchPokemonJson(from, to) {
     try {
-        for (let i = from ; i < to ; i++) {   // i auf Array.Länge
+        for (let i = from; i < to; i++) {   // i auf Array.Länge
             let id = i + 1;
             await fetchAndPushToArr(id);
         }
@@ -192,7 +203,7 @@ function jsonToPokedex(pokemonJson, speciesJson) {
 async function fetchEvoChainJson(i) {
     try {
         let evoRes = await fetch(BASE_URL + pokeEvoChain + pokedex[i].evoChainId);
-        let evoResJson = await evoRes.json()        
+        let evoResJson = await evoRes.json()
         evoChain.push(await jsonToEvoChain(evoResJson))
     } catch (error) {
         console.error("fetch evoChain:", error)
@@ -254,10 +265,6 @@ async function fetchPokemonImageByNameOrId(nameOrId) {
 // ---OPTIONAL--- //
 // save to local storage // eher nicht.
 // // check, if pokemon @pokedex + @evoChain / localStorage (save to localStorage) -> before fetch new
-
-
-
-
 
 // function saveToLocalStorage() {
 //     localStorage.setItem('pokedex', JSON.stringify(pokedex))
