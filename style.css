@@ -8,27 +8,27 @@
 
 :root {
     --bg-general: #f6f8fc;
-    --bg-card: hsl(0, 0%, 100%);
-    --bg-card-hover: hsl(0, 0%, 80%);
+    --bg-card: #ffffff;
+    --bg-card-hover: #cccccc;
 
-    --bg-normal-1: hsl(208, 8%, 80%);
-    --bg-fighting-2: hsl(342, 59%, 73%);
-    --bg-flying-3: hsl(342, 59%, 73%);
-    --bg-poison-4: hsl(281, 46%, 80%);
-    --bg-ground-5: hsl(21, 66%, 76%);
-    --bg-rock-6: hsl(45, 33%, 86%);
-    --bg-bug-7: hsl(80, 61%, 67%);
-    --bg-ghost-8: hsl(225, 36%, 70%);
-    --bg-steel-9: hsl(197, 29%, 69%);
-    --bg-fire-10: hsl(25, 100%, 87%);
-    --bg-water-11: hsl(211, 62%, 78%);
-    --bg-grass-12: hsl(114, 42%, 75%);
-    --bg-electric-13: hsl(49, 89%, 80%);
-    --bg-psychic-14: hsl(356, 93%, 91%);
-    --bg-ice-15: hsl(171, 48%, 83%);
-    --bg-dragon-16: hsl(208, 89%, 60%);
-    --bg-dark-17: hsl(261, 9%, 56%);
-    --bg-fairy-18: hsl(304, 71%, 94%);
+    --bg-normal-1: #c8ccd0;
+    --bg-fighting-2: #e392aa;
+    --bg-flying-3: #e0e7f6;
+    --bg-poison-4: #d5b5e3;
+    --bg-ground-5: #eab699;
+    --bg-rock-6: #e7e1d0;
+    --bg-bug-7: #bcde78;
+    --bg-ghost-8: #97a5ce;
+    --bg-steel-9: #99bac7;
+    --bg-fire-10: #ffd8bd;
+    --bg-water-11: #a4c6ea;
+    --bg-grass-12: #aadaa4;
+    --bg-electric-13: #f9e99f;
+    --bg-psychic-14: #fdd3d6;
+    --bg-ice-15: #bfe8e2;
+    --bg-dragon-16: #3e9ff4;
+    --bg-dark-17: #8c8599;
+    --bg-fairy-18: #fbe5f9;
 
     /* --normal-1: hsl(208, 8%, 60%);
     --fighting-2: hsl(342, 59%, 53%);
@@ -69,62 +69,8 @@ a {
     display: none;
 }
 
-.container {
-    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
-}
-
-.btn-main-container {
-    width: min(45%, 192px)
-}
-
-.btn-main {
-    background-color: var(--bg-card);
-    height: 2rem;
-    width: 100%;
-    clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
-    outline: none;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-main:hover {
-    background-color: var(--bg-card-hover);
-}
-
-.btn-main[disabled] {
-    background-color: var(--bg-general);
-    cursor: auto;
-}
-
-.w16perc {
-    width: 16%;
-}
-
-.w80perc {
-    width: 80%;
-}
-
-.clip9 {
-    clip-path: polygon(9% 0%, 100% 0%, 100% 50%, 91% 100%, 0 100%, 0 50%) !important;
-}
-
-.btn-main img {
-    height: 2rem;
-}
-
-footer,
-.margin-and-width,
-#mainCards,
-.mainCards {
-    width: min(90%, 1440px);
-}
-
-.mainCards,
-#mainCards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(156px, 100%), 1fr));
-    gap: 2rem;
-    margin: 2rem auto;
+.relative{
+    position: relative;
 }
 
 .center {
@@ -153,91 +99,131 @@ footer,
     align-items: flex-end;
 }
 
+.btn-main-width {
+    width: min(45%, 192px)
+}
+
+.btn-main {
+    background-color: var(--bg-card);
+    height: 2rem;
+    width: 100%;
+    clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.search:hover,
+.btn-main:hover {
+    background-color: var(--bg-card-hover);
+}
+
+.btn-main[disabled] {
+    background-color: var(--bg-general);
+    cursor: auto;
+}
+
+.search{
+    width: max-content;
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-card);
+    height: 2rem;
+    width: 100%;
+    clip-path: polygon(1% 0%, 100% 0%, 100% 50%, 99% 100%, 0 100%, 0 50%);
+    padding: 0 2rem;
+    margin: 1rem 0;
+    transition: box-shadow 0.25s;
+}
+
+.search:focus-within {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+}
+
+.search-input {
+    font: inherit;
+    width: 90%;
+    height: max-content;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background: transparent;
+    padding-inline: 8px;
+}
+
+.search-input::placeholder{
+color: #00000040;
+}
+
+.search-input:not(:placeholder-shown):valid {
+    color: green;
+}
+.search-input:not(:placeholder-shown):invalid {
+    color: red;
+}
+
+.search-icon {
+    height: 1.5rem;
+}
+
+.search-button{
+    border: none;
+    outline: none;
+    width: 10%;
+    background-color: inherit;
+    cursor: pointer; 
+}
+
+header>.container:hover {
+    cursor: auto;
+}
+
+.w16perc {
+    width: 16%;
+}
+
+.w80perc {
+    width: 80%;
+}
+
+.clip9 {
+    clip-path: polygon(9% 0%, 100% 0%, 100% 50%, 91% 100%, 0 100%, 0 50%) !important;
+}
+
+.logo {
+    width: 100%;
+    object-fit: cover;
+    max-height: 400px;
+}
+
+footer,
+.margin-and-width,
+#mainCards,
+.mainCards {
+    width: min(90%, 1440px);
+}
+
+.mainCards,
+#mainCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(156px, 100%), 1fr));
+    gap: 2rem;
+    margin: 2rem auto;
+}
+
+.container {
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
+}
+
 .mainCard {
     height: 312px;
     background-color: var(--bg-card);
     text-align: center;
     clip-path: polygon(7% 40%, 100% 40%, 100% 90%, 93% 100%, 0 100%, 0 50%);
-}
-
-.container:hover {
-    cursor: pointer;
-}
-
-.container:hover>.pokeImg {
-    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.6));
-}
-
-.container:hover>.mainCard[data-bg="normal-1"] {
-    background-color: var(--bg-normal-1);
-}
-
-.container:hover>.mainCard[data-bg="fighting-2"] {
-    background-color: var(--bg-fighting-2);
-}
-
-.container:hover>.mainCard[data-bg="flying-3"] {
-    background-color: var(--bg-flying-3);
-}
-
-.container:hover>.mainCard[data-bg="poison-4"] {
-    background-color: var(--bg-poison-4);
-}
-
-.container:hover>.mainCard[data-bg="ground-5"] {
-    background-color: var(--bg-ground-5);
-}
-
-.container:hover>.mainCard[data-bg="rock-6"] {
-    background-color: var(--bg-rock-6);
-}
-
-.container:hover>.mainCard[data-bg="bug-7"] {
-    background-color: var(--bg-bug-7);
-}
-
-.container:hover>.mainCard[data-bg="ghost-8"] {
-    background-color: var(--bg-ghost-8);
-}
-
-.container:hover>.mainCard[data-bg="steel-9"] {
-    background-color: var(--bg-steel-9);
-}
-
-.container:hover>.mainCard[data-bg="fire-10"] {
-    background-color: var(--bg-fire-10);
-}
-
-.container:hover>.mainCard[data-bg="water-11"] {
-    background-color: var(--bg-water-11);
-}
-
-.container:hover>.mainCard[data-bg="grass-12"] {
-    background-color: var(--bg-grass-12);
-}
-
-.container:hover>.mainCard[data-bg="electric-13"] {
-    background-color: var(--bg-electric-13);
-}
-
-.container:hover>.mainCard[data-bg="psychic-14"] {
-    background-color: var(--bg-psychic-14);
-}
-
-.container:hover>.mainCard[data-bg="ice-15"] {
-    background-color: var(--bg-ice-15);
-}
-
-.container:hover>.mainCard[data-bg="dragon-16"] {
-    background-color: var(--bg-dragon-16);
-}
-
-.container:hover>.mainCard[data-bg="dark-17"] {
-    background-color: var(--bg-dark-17);
-}
-
-.container:hover>.mainCard[data-bg="fairy-18"] {
-    background-color: var(--bg-fairy-18);
 }
 
 .pokeImg {
@@ -287,8 +273,7 @@ footer,
     height: 80vh;
     text-align: center;
     clip-path: unset;
-    background: url(./assets/img/pokeball_black.svg) center 16% / 60% no-repeat;
-    /* animation: spin 1s infinite linear; */
+    background: url(./assets/img/pokeball_standard.svg) center 16% / 60% no-repeat;
 }
 
 .dialog::backdrop {
@@ -336,6 +321,162 @@ footer,
 }
 
 
+/* HOVER EFFECTS CARDS */
+
+
+.container:hover {
+    cursor: pointer;
+}
+
+.container:hover>.pokeImg {
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.6));
+}
+
+
+.container:hover>.mainCard[data-bg="normal-1"] {
+    background-color: var(--bg-normal-1);
+}
+
+.dialog .mainCard[data-bg="normal-1"]:hover{
+    background: url(./assets/img/ball_1_normal.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="fighting-2"] {
+    background-color: var(--bg-fighting-2);
+}
+
+.dialog .mainCard[data-bg="fighting-2"]:hover{
+    background: url(./assets/img/ball_2_fighting.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="flying-3"] {
+    background-color: var(--bg-flying-3);
+}
+
+.dialog .mainCard[data-bg="flying-3"]:hover{
+    background: url(./assets/img/ball_3_flying.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="poison-4"] {
+    background-color: var(--bg-poison-4);
+}
+
+.dialog .mainCard[data-bg="poison-4"]:hover{
+    background: url(./assets/img/ball_4_poison.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="ground-5"] {
+    background-color: var(--bg-ground-5);
+}
+
+.dialog .mainCard[data-bg="ground-5"]:hover{
+    background: url(./assets/img/ball_5_ground.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="rock-6"] {
+    background-color: var(--bg-rock-6);
+}
+
+.dialog .mainCard[data-bg="rock-6"]:hover{
+    background: url(./assets/img/ball_6_rock.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="bug-7"] {
+    background-color: var(--bg-bug-7);
+}
+
+.dialog .mainCard[data-bg="bug-7"]:hover{
+    background: url(./assets/img/ball_7_bug.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="ghost-8"] {
+    background-color: var(--bg-ghost-8);
+}
+
+.dialog .mainCard[data-bg="ghost-8"]:hover{
+    background: url(./assets/img/ball_8_ghost.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="steel-9"] {
+    background-color: var(--bg-steel-9);
+}
+
+.dialog .mainCard[data-bg="steel-9"]:hover{
+    background: url(./assets/img/ball_9_steel.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="fire-10"] {
+    background-color: var(--bg-fire-10);
+}
+
+.dialog .mainCard[data-bg="fire-10"]:hover{
+    background: url(./assets/img/ball_10_fire.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="water-11"] {
+    background-color: var(--bg-water-11);
+}
+
+.dialog .mainCard[data-bg="water-11"]:hover{
+    background: url(./assets/img/ball_11_water.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="grass-12"] {
+    background-color: var(--bg-grass-12);
+}
+
+.dialog .mainCard[data-bg="grass-12"]:hover{
+    background: url(./assets/img/ball_12_grass.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="electric-13"] {
+    background-color: var(--bg-electric-13);
+}
+
+.dialog .mainCard[data-bg="electric-13"]:hover{
+    background: url(./assets/img/ball_13_electric.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="psychic-14"] {
+    background-color: var(--bg-psychic-14);
+}
+
+.dialog .mainCard[data-bg="psychic-14"]:hover{
+    background: url(./assets/img/ball_14_psychic.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="ice-15"] {
+    background-color: var(--bg-ice-15);
+}
+
+.dialog .mainCard[data-bg="ice-15"]:hover{
+    background: url(./assets/img/ball_15_ice.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="dragon-16"] {
+    background-color: var(--bg-dragon-16);
+}
+
+.dialog .mainCard[data-bg="dragon-16"]:hover{
+    background: url(./assets/img/ball_16_dragon.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="dark-17"] {
+    background-color: var(--bg-dark-17);
+}
+
+.dialog .mainCard[data-bg="dark-17"]:hover{
+    background: url(./assets/img/ball_17_dark.svg) center 16% / 60% no-repeat;
+}
+
+.container:hover>.mainCard[data-bg="fairy-18"] {
+    background-color: var(--bg-fairy-18);
+}
+
+.dialog .mainCard[data-bg="fairy-18"]:hover{
+    background: url(./assets/img/ball_18_fairy.svg) center 16% / 60% no-repeat;
+}
+
 
 
 /* LOADING SPINNER */
@@ -369,6 +510,11 @@ footer,
     }
 }
 
+.small-spinner {
+    height: 12px;
+    object-fit: scale-down;
+    animation: spin 1s infinite linear;
+}
 
 /* FOOTER */
 

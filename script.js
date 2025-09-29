@@ -18,46 +18,20 @@ let impressumRef = document.getElementById('impressum');
 
 let myInterval;
 
-// FETCHEN
-// done: beim ersten Mal bis z.B. i < 40 Laden
-// done: if (i <20) fetch + push array
-// neu: wenn (i>=20), dann fetch + push array + render (setInterval) + fetch weitere 20.
-// was passiert, wenn weitere 20 geladen, bzw. was wenn next-btn / more-btn, -> z.B. weitere 20 Laden
-// ODER ALTERNATIV: 40 fetchen, aber nur 20 anzeigen
-
 async function init() {
-    mainCardsRef.innerHTML = ''; // Anfang egal. Optional weg lassen? // ACHTUNG: bei more()
     checkLengthAndRender(); // set interval()
-    // toggleLoadingSpinner(); // zeig an, wenn i < 20 bzw. bei more, wenn nötig? (DA)
     await fetchPokemonJson(0, 40);
 }
-
-// showMore()
-// Loading()
-// render()
-// loading()
-
-// ---Prio1--- //
-// add next + prev Button in Modal
-//      based of the PokeNumber
-// more button // ADJUSTMENT needed (!)
-
-
-// Start
-// Laden wir 40 Pokemon
-//  -> Schleife immer 1 api.json => array.push
-// speichern wir die lokal im array = (roh)pokeFetchJson
-// 20 anzeigen 
 
 function toggleLoadingSpinner() {
     document.getElementById('spinner').classList.toggle('d_none');
 }
 
-function checkLengthAndRender() { // läuft im Hintergrun kontinuierlich // muss beginnen vor Fetch
+function checkLengthAndRender() {
+    mainCardsRef.innerHTML = '';
     toggleLoadingSpinner();
     myInterval = setInterval(() => {
         if (pokedex.length >= 20) {
-            // pushJsonToArray(pokeFetchJson, pokedex);
             toggleLoadingSpinner();
             renderPokemon(0, 20);
             stopInterval();
@@ -69,28 +43,46 @@ function stopInterval() {
     clearInterval(myInterval);
 }
 
-async function nextSetOfPokemon() {
-    let lastId = parseInt(PokeIdOnScreen('last'));
-    console.log('from: ', lastId);
-    to = lastId + 20;
-    console.log('to: ', to);
-    document.getElementById('btn_prev').disabled = false;
-    mainCardsRef.innerHTML = '';
-    renderPokemon(lastId, to);
-    console.log('Pokedex.length: ', pokedex.length);
-    if (to === pokedex.length) {
-        await fetchPokemonJson(pokedex.length, pokedex.length + 40)
-    }// TO BE UPDATED (!) // ATTENTION: when next + previous + next: double fetch
-}
-
-function prevSetOfPokemon() {
+function showPrevTwenty() {
     let firstId = parseInt(PokeIdOnScreen('first'))
-    if (firstId === 21 || firstId === 10021) {
+    if (firstId <= 21 || firstId === 10021) {
         document.getElementById('btn_prev').disabled = true;
     }
     mainCardsRef.innerHTML = '';
-
     renderPokemon(firstId - 21, firstId - 1)
+}
+
+async function showNextTwentyAndMoreTwenty(elem = null) {
+    disableButtons();
+    let lastId = parseInt(PokeIdOnScreen('last'));
+    from = lastId;
+    to = lastId + 20;
+    if (elem === 'next') { mainCardsRef.innerHTML = ''; }
+    renderPokemon(from, to);
+    if (to === pokedex.length) {
+        await fetchPokemonJson(pokedex.length, pokedex.length + 40)
+    }
+    enableButtons();
+}
+
+function disableButtons() {
+    document.getElementById(`btn_next`).disabled = document.getElementById(`btn_more`).disabled = true;
+    for (let n = 1; n <= 2; n++) {
+        document.getElementById(`smallSpinner${n}`).style.display = "flex";
+    }
+}
+
+function enableButtons() {
+    document.getElementById(`btn_next`).disabled = document.getElementById(`btn_more`).disabled = false;
+    for (let n = 1; n <= 2; n++) {
+        document.getElementById(`smallSpinner${n}`).style.display = "none";
+    }
+    let firstId = parseInt(PokeIdOnScreen('first'))
+    if (firstId < 21 || firstId === 10021) {
+        document.getElementById('btn_prev').disabled = true;
+    } else {
+        document.getElementById('btn_prev').disabled = false;
+    }
 }
 
 function PokeIdOnScreen(firstLast) {
@@ -99,36 +91,23 @@ function PokeIdOnScreen(firstLast) {
     return Id
 }
 
-async function showPlusTwentyMore() {
-    // let firstId = parseInt(PokeIdOnScreen('first'))
-    let lastId = parseInt(PokeIdOnScreen('last'));
-    from = lastId
-    to = lastId + 20;
-        console.log('from: ', from);
-    console.log('to: ', to);
-    console.log('Pokedex.length: ', pokedex.length);
-    // no emptying: mainCardsRef.innerHTML = '';
-    renderPokemon(from, to);
-    if (to === pokedex.length) {
-        await fetchPokemonJson(pokedex.length, pokedex.length + 40)
-    }
-}
-
-async function prevNextPokemon(i, event) {
-    if (i > pokedex.length - 1) {
-        i = 0;
-    } else if (i < 0) {
-        i = pokedex.length - 1;
-    }
-    await openDialog(i, event)
-}
-
 async function openDialog(i, event) {
     event.stopPropagation();
     await fetchEvoChainJson(i);
     dialogRef.showModal();
     dialogRef.innerHTML = getDialogCardHtml(i);
 
+}
+
+async function prevNextPokemon(i, event) {
+    event.stopPropagation();
+    let lastId = parseInt(PokeIdOnScreen('last'));
+    if (i > lastId - 1) {
+        i = 0;
+    } else if (i < 0) {
+        i = lastId - 1;
+    }
+    await openDialog(i, event)
 }
 
 function closeDialog() {
@@ -153,9 +132,6 @@ function getCurRenderedCount() {
     return document.getElementsByClassName('mainCard').length;
 }
 
-function comparePokedexWithPokeFetchJson() {
-
-}
 
 /**** FETCHes to ARRAYs ****/
 
@@ -184,7 +160,7 @@ async function fetchAndPushToArr(id) {
 }
 
 function jsonToPokedex(pokemonJson, speciesJson) {
-    pokedex.push({ //was: return `
+    pokedex.push({
         id: pokemonJson.id,
         name: pokemonJson.name,
         allNames: speciesJson.names,
@@ -247,7 +223,11 @@ async function fetchPokemonImageByNameOrId(nameOrId) {
     return spriteUrl;
 }
 
-
+function enter(event) {
+    if (event.key === 'Enter') {
+        searchPokemon()
+    }
+}
 
 
 // SUCHE
@@ -257,24 +237,42 @@ async function fetchPokemonImageByNameOrId(nameOrId) {
 // if ("xyRes" = null) {return}
 // vergleich Input mit fetchJson.XXX.name
 // push in z.B. SearchResultsArray
-// oder: in Array
+
+// ODER: in Array
 // Vergleich input mit Array (filter())
 
 
+function searchPokemon() {
+    let input = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (input.length < 3) {
+        return;
+    }
+    let filteredPokedex = pokedex.filter(item => {
+        if (item.allNames.some(entry=>entry.name.toLowerCase().includes(input))) {
+            return item;
+        }
+    })
+    renderSearch(filteredPokedex);
 
-// ---OPTIONAL--- //
-// save to local storage // eher nicht.
-// // check, if pokemon @pokedex + @evoChain / localStorage (save to localStorage) -> before fetch new
+    document.getElementById('searchInput').value = '';
+}
 
-// function saveToLocalStorage() {
-//     localStorage.setItem('pokedex', JSON.stringify(pokedex))
-// }
+function renderSearch(filteredPokedex) {
+    mainCardsRef.innerHTML = '';
+    if (filteredPokedex.length === 0) {
+        mainCardsRef.innerHTML = getSearchErrorHtml();
+    }
+    for (let k = 0; k < filteredPokedex.length; k++) {
+        let id = filteredPokedex[k].id
+        let i = pokeIdToPokeIndex(id)
+        mainCardsRef.innerHTML += getMainCardsHtml(i, filteredPokedex);
+    }
+}
 
-// function loadFromLocalStorage() {
-//     let pokedexLoadFromLocal = JSON.parse(localStorage.getItem('pokedex'))
-//     if (pokedexLoadFromLocal !== null) {
-//         pokedex = pokedexLoadFromLocal;
-//     }
-// }
+function pokeIdToPokeIndex(id) {
+    let i = pokedex.findIndex(item => item.id === id);
+    return i;
+}
+
 
 

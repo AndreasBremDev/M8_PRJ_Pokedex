@@ -1,3 +1,152 @@
+@media (max-width: 450px) {
+    .container>.mainCard[data-bg="normal-1"] {
+        background-color: var(--bg-normal-1);
+    }
+
+     .mainCard[data-bg="normal-1"] {
+        background: url(../assets/img/ball_1_normal.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="fighting-2"] {
+        background-color: var(--bg-fighting-2);
+    }
+
+     .mainCard[data-bg="fighting-2"] {
+        background: url(../assets/img/ball_2_fighting.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="flying-3"] {
+        background-color: var(--bg-flying-3);
+    }
+
+     .mainCard[data-bg="flying-3"] {
+        background: url(../assets/img/ball_3_flying.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="poison-4"] {
+        background-color: var(--bg-poison-4);
+    }
+
+     .mainCard[data-bg="poison-4"] {
+        background: url(../assets/img/ball_4_poison.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="ground-5"] {
+        background-color: var(--bg-ground-5);
+    }
+
+     .mainCard[data-bg="ground-5"] {
+        background: url(../assets/img/ball_5_ground.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="rock-6"] {
+        background-color: var(--bg-rock-6);
+    }
+
+     .mainCard[data-bg="rock-6"] {
+        background: url(../assets/img/ball_6_rock.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="bug-7"] {
+        background-color: var(--bg-bug-7);
+    }
+
+     .mainCard[data-bg="bug-7"] {
+        background: url(../assets/img/ball_7_bug.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="ghost-8"] {
+        background-color: var(--bg-ghost-8);
+    }
+
+     .mainCard[data-bg="ghost-8"] {
+        background: url(../assets/img/ball_8_ghost.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="steel-9"] {
+        background-color: var(--bg-steel-9);
+    }
+
+     .mainCard[data-bg="steel-9"] {
+        background: url(../assets/img/ball_9_steel.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="fire-10"] {
+        background-color: var(--bg-fire-10);
+    }
+
+     .mainCard[data-bg="fire-10"] {
+        background: url(../assets/img/ball_10_fire.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="water-11"] {
+        background-color: var(--bg-water-11);
+    }
+
+     .mainCard[data-bg="water-11"] {
+        background: url(../assets/img/ball_11_water.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="grass-12"] {
+        background-color: var(--bg-grass-12);
+    }
+
+     .mainCard[data-bg="grass-12"] {
+        background: url(../assets/img/ball_12_grass.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="electric-13"] {
+        background-color: var(--bg-electric-13);
+    }
+
+     .mainCard[data-bg="electric-13"] {
+        background: url(../assets/img/ball_13_electric.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="psychic-14"] {
+        background-color: var(--bg-psychic-14);
+    }
+
+     .mainCard[data-bg="psychic-14"] {
+        background: url(../assets/img/ball_14_psychic.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="ice-15"] {
+        background-color: var(--bg-ice-15);
+    }
+
+     .mainCard[data-bg="ice-15"] {
+        background: url(../assets/img/ball_15_ice.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="dragon-16"] {
+        background-color: var(--bg-dragon-16);
+    }
+
+     .mainCard[data-bg="dragon-16"] {
+        background: url(../assets/img/ball_16_dragon.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="dark-17"] {
+        background-color: var(--bg-dark-17);
+    }
+
+     .mainCard[data-bg="dark-17"] {
+        background: url(../assets/img/ball_17_dark.svg) center 16% / 60% no-repeat;
+    }
+
+    .container>.mainCard[data-bg="fairy-18"] {
+        background-color: var(--bg-fairy-18);
+    }
+
+     .mainCard[data-bg="fairy-18"] {
+        background: url(../assets/img/ball_18_fairy.svg) center 16% / 60% no-repeat;
+    }
+    .search {
+        padding: 0 0.5rem;
+    }
+}
+
 @media (max-width: 350px) {
     .social-name {
         display: none;

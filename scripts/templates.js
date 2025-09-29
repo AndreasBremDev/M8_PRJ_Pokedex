@@ -16,7 +16,7 @@ function getMainCardsHtml(i) {
 function getDialogCardHtml(i) {
     return `                
         <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
-        <article class="mainCard" class="pokeImg">
+        <article class="mainCard" class="pokeImg" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
             <div class="flex flex_col">
                 <div class="flex margin-and-width justify_between flex_end"class="">
                     <div class="container w16perc">
@@ -29,6 +29,7 @@ function getDialogCardHtml(i) {
                 </div>
                 <h2>${renderPokeName(i)}</h2>
                 <div id="pokeType">${renderTypeImg(i)}</div>
+                </div>
                 <div>
                     <table>
                         <tr>
@@ -96,6 +97,33 @@ function getDialogCardHtml(i) {
         </article>`
 }
 
+function getFilteredCardsHtml(i, filteredPokedex) {
+    return `
+        <div class="container" onclick="openDialog(${i}, event); toggleDialogStyling('hidden')" data-pokeId="${filteredPokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}">
+            <img src="${filteredPokedex[i].sprites}" alt="Pokemon ${filteredPokedex[i].name}" class="pokeImg">
+            <article class="mainCard" data-bg="${filteredPokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
+                <div class="flex flex_col">
+                    <h3>No. ${filteredPokedex[i].id}</h3>
+                    <h2>${renderPokeName(i)}</h2>
+                    <div id="pokeType">${renderTypeImg(i)}</div>
+                </div>
+            </article>
+        </div>
+    `
+}
+
+function getSearchNotificationHtml(){
+    return `
+        please enter at least 3 characters in your search.`
+}
+
+function getSearchErrorHtml(){
+    return `try another 🔍 search 
+        <br>&nbsp;&nbsp;&nbsp;
+           try enter: pikachu
+        <br>
+        or click on "20more"`
+}
 
 function getPokeTypeHtml(key, i, k) {
     return `<img src="./assets/types/${typesObj[key]}.png" alt="pokemon type ${pokedex[i].types[k].type.name}" class="pokeType">`;

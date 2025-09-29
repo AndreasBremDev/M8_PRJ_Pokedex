@@ -1,10 +1,10 @@
 function renderPokemon(from, to) {
-    for (let i = from; i < to; i++) { // WAS: i < (curOffset + limit)
+    for (let i = from; i < to; i++) {
         mainCardsRef.innerHTML += getMainCardsHtml(i);
     }
 }
 
-function renderPokeName(i) {
+function renderPokeName(i) {   
     return pokedex[i].name.charAt(0).toUpperCase() + pokedex[i].name.slice(1)
 }
 

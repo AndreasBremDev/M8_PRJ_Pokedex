@@ -17,22 +17,34 @@
 </head>
 
 <body onload="init()">
-    <header>
-        <nav class="flex margin-and-width justify_between">
-            LOGO - SEARCHBAR 🔍
-        </nav>
+    <header class="flex margin-and-width flex_col">
+        <img src="./assets/img/title_pokemon.png" alt="Pokemon Logo" class="logo">
+            <form class="container">
+                <div class="search">
+                    <input class="search-input" id="searchInput" type="search" 
+                    onkeyup="enter(event)" oninput="searchPokemon()" 
+                    placeholder="search loaded Pokemons" autocomplete="off">
+                    <button class="search-button" onclick="searchPokemon()" type="submit">
+                        <img class="search-icon" src="./assets/icon/search_icon.svg" alt="search magnifying glass">
+                    </button>
+                </div>
+            </form>
     </header>
     <div class="loading-Spinner d_none" id="spinner">
-        <img src="./assets/icon/icon.svg" alt="">
+        <img src="./assets/icon/icon.svg" alt="pokeball">
     </div>
     <main>
 
         <div class="flex margin-and-width justify_between">
-            <div class="container btn-main-container">
-                <button onclick="prevSetOfPokemon(20)" id="btn_prev" class="btn-main" disabled>previous 20</button>
+            <div class="container btn-main-width">
+                <button id="btn_prev" class="btn-main" onclick="showPrevTwenty()" disabled>previous 20</button>
             </div>
-            <div class="container btn-main-container">
-                <button onclick="nextSetOfPokemon(20)" class="btn-main">next 20</button>
+            <div class="container btn-main-width">
+                <button id="btn_next" class="btn-main" onclick="showNextTwentyAndMoreTwenty('next')">
+                    <img id="smallSpinner1" class="small-spinner" src="./assets/icon/icon.svg" alt="pokeball"
+                        style="display:none;">&nbsp;
+                    next 20
+                </button>
             </div>
         </div>
 
@@ -46,8 +58,12 @@
 
 
         <div class="flex margin-and-width center">
-            <div class="container btn-main-container">
-                <button onclick="showPlusTwentyMore(20)" id="btn_more" class="btn-main">20 more</button>
+            <div class="container btn-main-width">
+                <button onclick="showNextTwentyAndMoreTwenty('more')" id="btn_more" class="btn-main">
+                    <img id="smallSpinner2" class="small-spinner" src="./assets/icon/icon.svg" alt="pokeball"
+                        style="display:none;">&nbsp;
+                    20 more
+                </button>
             </div>
         </div>
 
@@ -67,8 +83,8 @@
             </a>
             <div>|</div>
             <a href="https://github.com/AndreasBremDev" target="_blank">
-            <img src="./assets/icon/github-brands.svg" alt="GitHub-Symbol">
-            <span class="social-name">GitHub</span>
+                <img src="./assets/icon/github-brands.svg" alt="GitHub-Symbol">
+                <span class="social-name">GitHub</span>
             </a>
         </div>
     </footer>
