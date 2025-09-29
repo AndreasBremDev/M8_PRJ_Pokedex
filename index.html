@@ -24,9 +24,9 @@
         <form class="container" onsubmit="return false;">
             <div class="search">
                 <input class="search-input" id="searchInput" type="search" onkeyup="enter(event)"
-                    placeholder="search loaded Pokemons" autocomplete="off" oninput="searchPokemon()">
-                <button class="search-button" onclick="searchPokemon()" type="button">
-                    <img class="search-icon" src="./assets/icon/search_icon.svg" alt="search magnifying glass">
+                    placeholder="search loaded Pokemons" autocomplete="off" oninput="searchPokemon()" minlength="3">
+                <button class="search-button" onclick="searchPokemon()" type="button" aria-label="Search Pokemon by Name">
+                    <img class="search-icon" src="./assets/icon/search_icon.svg" alt="search magnifying glass" aria-hidden="true">
                 </button>
             </div>
         </form>
@@ -38,10 +38,10 @@
 
         <div class="flex margin-and-width justify_between">
             <div class="container btn-main-width">
-                <button id="btn_prev" class="btn-main" onclick="showPrevTwenty()" disabled>previous 20</button>
+                <button id="btn_prev" class="btn-main" onclick="showPrevTwenty()" disabled aria-disabled="true" aria-label="show previous 20 pokemons">previous 20</button>
             </div>
             <div class="container btn-main-width">
-                <button id="btn_next" class="btn-main" onclick="showNextTwentyAndMoreTwenty('next')">
+                <button id="btn_next" class="btn-main" onclick="showNextTwentyAndMoreTwenty('next')" aria-label="show previous 20 pokemons">
                     <img id="smallSpinner1" class="small-spinner" src="./assets/icon/icon.svg" alt="pokeball"
                         style="display:none;">&nbsp;
                     next 20
@@ -70,7 +70,7 @@
 
     </main>
     <footer>
-        <span onclick="openImpressum();toggleDialogStyling('hidden')"><a>IMPRESSUM</a></span>
+        <span onclick="openImpressum();toggleDialogStyling('hidden')" role="button" aria-label="impressum dialog" aria-haspopup="dialog" aria-controls="impressum"><a>IMPRESSUM</a></span>
         <div>(c) 2025 AndreasBremDev </div>
         <div class="social">
             <a href="https://www.facebook.com/andreas.steinig.1/" target="_blank">

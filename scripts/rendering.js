@@ -4,6 +4,22 @@ function renderPokemon(from, to) {
     }
 }
 
+function roundToLastTwentyAndRender() {
+    disableButtons();
+    let lastId = parseInt(PokeIdOnScreen('last'));
+    from = (Math.ceil(lastId / 20) * 20) - 20;
+    to = from + 20;
+    mainCardsRef.innerHTML = '';
+    renderPokemon(from, to);
+}
+
+function findLastIdOnScreenAndRenderNextTwenty(elem) {
+    disableButtons();
+    let lastId = parseInt(PokeIdOnScreen('last'));
+    if (elem === 'next') { mainCardsRef.innerHTML = ''; }
+    renderPokemon(lastId, lastId + 20);
+}
+
 function renderPokeName(i) {   
     return pokedex[i].name.charAt(0).toUpperCase() + pokedex[i].name.slice(1)
 }

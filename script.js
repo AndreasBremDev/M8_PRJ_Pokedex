@@ -20,7 +20,7 @@ let myInterval;
 
 async function init() {
     checkLengthAndRender(); // set interval()
-    await fetchPokemonJson(0, 40);
+    await fetchPokemonJson(0, 100);
 }
 
 function toggleLoadingSpinner() {
@@ -43,6 +43,42 @@ function stopInterval() {
     clearInterval(myInterval);
 }
 
+function searchPokemon() {
+    let input = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (input.length === 0) { window.location.reload(); }
+    if (input.length < 3) { return; }
+    let filteredPokedex = pokedex.filter(item => {
+        if (item.allNames.some(entry => entry.name.toLowerCase().includes(input))) {
+            return item;
+        }
+    })
+    renderSearch(filteredPokedex, input);
+}
+
+function enter(event) {
+    if (event.key === 'Enter') {
+        searchPokemon();
+        document.getElementById('searchInput').value = '';
+    }
+}
+
+function renderSearch(filteredPokedex, input) {
+    mainCardsRef.innerHTML = '';
+    if (filteredPokedex.length === 0) {
+        mainCardsRef.innerHTML = getSearchErrorHtml(input);
+    }
+    for (let k = 0; k < filteredPokedex.length; k++) {
+        let id = filteredPokedex[k].id
+        let i = pokeIdToPokeIndex(id)
+        mainCardsRef.innerHTML += getMainCardsHtml(i, filteredPokedex);
+    }
+}
+
+function pokeIdToPokeIndex(id) {
+    let i = pokedex.findIndex(item => item.id === id);
+    return i;
+}
+
 function showPrevTwenty() {
     let firstId = parseInt(PokeIdOnScreen('first'))
     if (firstId <= 21 || firstId === 10021) {
@@ -53,14 +89,17 @@ function showPrevTwenty() {
 }
 
 async function showNextTwentyAndMoreTwenty(elem = null) {
-    disableButtons();
-    let lastId = parseInt(PokeIdOnScreen('last'));
-    from = lastId;
-    to = lastId + 20;
-    if (elem === 'next') { mainCardsRef.innerHTML = ''; }
-    renderPokemon(from, to);
-    if (to === pokedex.length) {
-        await fetchPokemonJson(pokedex.length, pokedex.length + 40)
+    document.getElementById('searchInput').value = '';
+    if (mainCardsRef.innerText.startsWith("No result")) {
+        mainCardsRef.innerHTML = '';
+        renderPokemon(0, 20);
+    } else if (parseInt(PokeIdOnScreen('last')) % 20 !== 0) {
+        roundToLastTwentyAndRender();
+    } else {
+        findLastIdOnScreenAndRenderNextTwenty(elem);
+    }
+    if (parseInt(PokeIdOnScreen('last')) >= pokedex.length - 20 || parseInt(PokeIdOnScreen('last')) <= pokedex) {
+        await fetchPokemonJson(pokedex.length, pokedex.length + 100)
     }
     enableButtons();
 }
@@ -81,7 +120,7 @@ function enableButtons() {
     if (firstId < 21 || firstId === 10021) {
         document.getElementById('btn_prev').disabled = true;
     } else {
-        document.getElementById('btn_prev').disabled = false;
+        document.getElementById('btn_prev').disabled = document.getElementById('btn_prev').ariaDisabled = false;
     }
 }
 
@@ -127,11 +166,6 @@ function openImpressum() {
     impressumRef.showModal();
     impressumRef.innerHTML = getImpressumHtml();
 }
-
-function getCurRenderedCount() {
-    return document.getElementsByClassName('mainCard').length;
-}
-
 
 /**** FETCHes to ARRAYs ****/
 
@@ -222,55 +256,3 @@ async function fetchPokemonImageByNameOrId(nameOrId) {
     }
     return spriteUrl;
 }
-
-function enter(event) {
-    if (event.key === 'Enter') {
-        searchPokemon()
-    }
-}
-
-
-// SUCHE
-// entweder: in API daten (fetch, über alle Pokemon, nur einen Wert)
-// for (i = 0; i 1800, statt 1302, i++)
-//let xyRes = await fetch(BASE_URL + pokeEvoChain + id);
-// if ("xyRes" = null) {return}
-// vergleich Input mit fetchJson.XXX.name
-// push in z.B. SearchResultsArray
-
-// DECISION: in Array
-// Vergleich input mit Array (filter())
-
-
-function searchPokemon() {
-    let input = document.getElementById('searchInput').value.trim().toLowerCase();
-    if (input.length === 0) {window.location.reload();}
-    if (input.length < 3) {return;}
-    let filteredPokedex = pokedex.filter(item => {
-        if (item.allNames.some(entry=>entry.name.toLowerCase().includes(input))) {
-            return item;
-        }
-    })
-    renderSearch(filteredPokedex, input);
-    // document.getElementById('searchInput').value = '';
-}
-
-function renderSearch(filteredPokedex, input) {
-    mainCardsRef.innerHTML = '';
-    if (filteredPokedex.length === 0) {
-        mainCardsRef.innerHTML = getSearchErrorHtml(input);
-    }
-    for (let k = 0; k < filteredPokedex.length; k++) {
-        let id = filteredPokedex[k].id
-        let i = pokeIdToPokeIndex(id)
-        mainCardsRef.innerHTML += getMainCardsHtml(i, filteredPokedex);
-    }
-}
-
-function pokeIdToPokeIndex(id) {
-    let i = pokedex.findIndex(item => item.id === id);
-    return i;
-}
-
-
-

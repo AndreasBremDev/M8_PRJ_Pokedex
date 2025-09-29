@@ -1,6 +1,6 @@
 function getMainCardsHtml(i) {
     return `
-        <div class="container" onclick="openDialog(${i}, event); toggleDialogStyling('hidden')" data-pokeId="${pokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}">
+        <div class="container" onclick="openDialog(${i}, event); toggleDialogStyling('hidden')" data-pokeId="${pokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}" aria-label="Open Pokemon Detail view">
             <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
             <article class="mainCard" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
                 <div class="flex flex_col">
@@ -112,18 +112,19 @@ function getFilteredCardsHtml(i, filteredPokedex) {
     `
 }
 
-function getSearchNotificationHtml(){
-    return `
-        please enter at least 3 characters in your search.`
-}
-
 function getSearchErrorHtml(input){
     return `
-    No result with your input: "${input}"
-    <br><br>
-    Please try another 🔍 search 
-    <br><br>&nbsp;&nbsp;&nbsp;
-           you could try enter: Pikachu
+    <div style="text-align:center;">
+            No result with your input: "${input}"
+        <br><br>
+            Please try another 🔍 search 
+        <br><br>
+            try enter: <img src="${pokedex[19].sprites}" alt="Pokemon ${pokedex[19].name}" style="height:1rem;"> \"<b>Rattata</b>\"
+            <br>
+            try enter <img src="${pokedex[24].sprites}" alt="Pokemon ${pokedex[24].name}" style="height:1rem;"> \"<b>Pikachu</b>\"
+        <br><br>
+            Alternatively click on "20 more" or "next 20".
+    </div>
     `
 }
 
