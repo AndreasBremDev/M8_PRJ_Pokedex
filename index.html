@@ -19,16 +19,17 @@
 <body onload="init()">
     <header class="flex margin-and-width flex_col">
         <img src="./assets/img/title_pokemon.png" alt="Pokemon Logo" class="logo">
-            <form class="container">
-                <div class="search">
-                    <input class="search-input" id="searchInput" type="search" 
-                    onkeyup="enter(event)" oninput="searchPokemon()" 
-                    placeholder="search loaded Pokemons" autocomplete="off">
-                    <button class="search-button" onclick="searchPokemon()" type="submit">
-                        <img class="search-icon" src="./assets/icon/search_icon.svg" alt="search magnifying glass">
-                    </button>
-                </div>
-            </form>
+        <h1 class="visually-hidden">Pokedex</h1>
+
+        <form class="container" onsubmit="return false;">
+            <div class="search">
+                <input class="search-input" id="searchInput" type="search" onkeyup="enter(event)"
+                    placeholder="search loaded Pokemons" autocomplete="off" oninput="searchPokemon()">
+                <button class="search-button" onclick="searchPokemon()" type="button">
+                    <img class="search-icon" src="./assets/icon/search_icon.svg" alt="search magnifying glass">
+                </button>
+            </div>
+        </form>
     </header>
     <div class="loading-Spinner d_none" id="spinner">
         <img src="./assets/icon/icon.svg" alt="pokeball">

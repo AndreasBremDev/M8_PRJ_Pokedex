@@ -117,12 +117,14 @@ function getSearchNotificationHtml(){
         please enter at least 3 characters in your search.`
 }
 
-function getSearchErrorHtml(){
-    return `try another 🔍 search 
-        <br>&nbsp;&nbsp;&nbsp;
-           try enter: pikachu
-        <br>
-        or click on "20more"`
+function getSearchErrorHtml(input){
+    return `
+    No result with your input: "${input}"
+    <br><br>
+    Please try another 🔍 search 
+    <br><br>&nbsp;&nbsp;&nbsp;
+           you could try enter: Pikachu
+    `
 }
 
 function getPokeTypeHtml(key, i, k) {

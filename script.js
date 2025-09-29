@@ -238,29 +238,27 @@ function enter(event) {
 // vergleich Input mit fetchJson.XXX.name
 // push in z.B. SearchResultsArray
 
-// ODER: in Array
+// DECISION: in Array
 // Vergleich input mit Array (filter())
 
 
 function searchPokemon() {
     let input = document.getElementById('searchInput').value.trim().toLowerCase();
-    if (input.length < 3) {
-        return;
-    }
+    if (input.length === 0) {window.location.reload();}
+    if (input.length < 3) {return;}
     let filteredPokedex = pokedex.filter(item => {
         if (item.allNames.some(entry=>entry.name.toLowerCase().includes(input))) {
             return item;
         }
     })
-    renderSearch(filteredPokedex);
-
-    document.getElementById('searchInput').value = '';
+    renderSearch(filteredPokedex, input);
+    // document.getElementById('searchInput').value = '';
 }
 
-function renderSearch(filteredPokedex) {
+function renderSearch(filteredPokedex, input) {
     mainCardsRef.innerHTML = '';
     if (filteredPokedex.length === 0) {
-        mainCardsRef.innerHTML = getSearchErrorHtml();
+        mainCardsRef.innerHTML = getSearchErrorHtml(input);
     }
     for (let k = 0; k < filteredPokedex.length; k++) {
         let id = filteredPokedex[k].id
