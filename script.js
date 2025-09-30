@@ -47,7 +47,10 @@ function stopInterval() {
 
 function searchPokemon() {
     let input = document.getElementById('searchInput').value.trim().toLowerCase();
-    if (input.length === 0) { window.location.reload(); }
+    if (input.length === 0) { 
+        mainCardsRef.innerHTML = '';
+        renderPokemon(0,80);
+    }
     if (input.length < 3) { return; }
     let filteredPokedex = pokedex.filter(item => {
         if (item.name.toLowerCase().includes(input)) {
