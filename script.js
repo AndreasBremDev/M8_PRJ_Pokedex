@@ -48,7 +48,7 @@ function searchPokemon() {
     if (input.length === 0) { window.location.reload(); }
     if (input.length < 3) { return; }
     let filteredPokedex = pokedex.filter(item => {
-        if (item.allNames.some(entry => entry.name.toLowerCase().includes(input))) {
+        if (item.name.toLowerCase().includes(input)) {
             return item;
         }
     })
@@ -169,6 +169,8 @@ function openImpressum() {
 
 /**** FETCHes to ARRAYs ****/
 
+// #region fetches
+
 async function fetchPokemonJson(from, to) {
     try {
         for (let i = from; i < to; i++) {   // i auf Array.Länge
@@ -256,3 +258,5 @@ async function fetchPokemonImageByNameOrId(nameOrId) {
     }
     return spriteUrl;
 }
+
+// #endregion

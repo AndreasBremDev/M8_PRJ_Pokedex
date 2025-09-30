@@ -29,25 +29,6 @@
     --bg-dragon-16: #3e9ff4;
     --bg-dark-17: #8c8599;
     --bg-fairy-18: #fbe5f9;
-
-    /* --normal-1: hsl(208, 8%, 60%);
-    --fighting-2: hsl(342, 59%, 53%);
-    --flying-3: hsl(220, 54%, 72%);
-    --poison-4: hsl(281, 46%, 60%);
-    --ground-5: hsl(21, 66%, 56%);
-    --rock-6: hsl(45, 33%, 66%);
-    --bug-7: hsl(80, 61%, 47%);
-    --ghost-8: hsl(225, 36%, 50%);
-    --steel-9: hsl(197, 29%, 49%);
-    --fire-10: hsl(25, 100%, 67%);
-    --water-11: hsl(211, 62%, 58%);
-    --grass-12: hsl(114, 42%, 55%);
-    --electric-13: hsl(49, 89%, 60%);
-    --psychic-14: hsl(356, 93%, 71%);
-    --ice-15: hsl(171, 48%, 63%);
-    --dragon-16: hsl(208, 89%, 40%);
-    --dark-17: hsl(261, 9%, 36%);
-    --fairy-18: hsl(304, 71%, 74%); */
 }
 
 body {
@@ -210,10 +191,6 @@ header>.container:hover {
     width: 80%;
 }
 
-.clip9 {
-    clip-path: polygon(9% 0%, 100% 0%, 100% 50%, 91% 100%, 0 100%, 0 50%) !important;
-}
-
 .logo {
     width: 100%;
     object-fit: cover;
@@ -328,17 +305,18 @@ footer,
     clip-path: polygon(9% 0%, 100% 0%, 100% 50%, 91% 100%, 0 100%, 0 50%);
 }
 
-.line-height {
-    line-height: inherit !important;
+td.line-height {
+    line-height: inherit;
+}
+
+td.no-bg {
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .mainCard td.clipOther {
     clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
 }
 
-.no-bg {
-    background-color: rgba(255, 255, 255, 0) !important;
-}
 
 
 /* HOVER EFFECTS CARDS */

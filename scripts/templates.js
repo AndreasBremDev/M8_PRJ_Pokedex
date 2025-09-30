@@ -20,7 +20,7 @@ function getDialogCardHtml(i) {
             <div class="flex flex_col">
                 <div class="flex margin-and-width justify_between flex_end"class="">
                     <div class="container w16perc">
-                        <button onclick="prevNextPokemon(${i - 1}, event)" class="btn-main clip9"><img src="./assets/icon/arrow_back.png" alt="back"></button>
+                        <button onclick="prevNextPokemon(${i - 1}, event)" class="btn-main"><img src="./assets/icon/arrow_back.png" alt="back"></button>
                     </div>
                     <h3>No. ${pokedex[i].id}</h3>
                     <div class="container w16perc">
