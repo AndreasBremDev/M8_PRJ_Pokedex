@@ -47,9 +47,9 @@ function stopInterval() {
 
 function searchPokemon() {
     let input = document.getElementById('searchInput').value.trim().toLowerCase();
-    if (input.length === 0) { 
+    if (input.length === 0) {
         mainCardsRef.innerHTML = '';
-        renderPokemon(0,80);
+        renderPokemon(0, 80);
     }
     if (input.length < 3) { return; }
     let filteredPokedex = pokedex.filter(item => {
@@ -65,6 +65,11 @@ function enter(event) {
         searchPokemon();
         document.getElementById('searchInput').value = '';
     }
+}
+
+function clearAndSearch() {
+    searchPokemon();
+    document.getElementById('searchInput').value = '';
 }
 
 function pokeIdToPokeIndex(id) {
@@ -166,7 +171,7 @@ function showTab(name) {
         tab[i].ariaSelected = "false";
     }
     document.getElementById(name).style.display = "block";
-    document.getElementById(name).ariaSelected= "true";
+    document.getElementById(name).ariaSelected = "true";
 }
 
 function openImpressum() {
