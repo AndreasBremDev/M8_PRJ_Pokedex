@@ -1,6 +1,6 @@
 function getMainCardsHtml(i) {
     return `
-        <div class="container" onclick="openDialog(${i}, event, 'yes')" data-pokeId="${pokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}" aria-label="Open Pokemon Detail view">
+        <div class="container" onclick="openDialog(${i}, event, 'yes')" data-pokeId="${pokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}" aria-controls="dialog">
             <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
             <article class="mainCard" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
                 <div class="flex flex_col">
