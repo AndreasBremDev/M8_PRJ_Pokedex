@@ -88,3 +88,15 @@ function findNumberOfTypesObj(i) {
         }
     }
 }
+
+function renderSearch(filteredPokedex, input) {
+    mainCardsRef.innerHTML = '';
+    if (filteredPokedex.length === 0) {
+        mainCardsRef.innerHTML = getSearchErrorHtml(input);
+    }
+    for (let k = 0; k < filteredPokedex.length; k++) {
+        let id = filteredPokedex[k].id
+        let i = pokeIdToPokeIndex(id)
+        mainCardsRef.innerHTML += getMainCardsHtml(i, filteredPokedex);
+    }
+}

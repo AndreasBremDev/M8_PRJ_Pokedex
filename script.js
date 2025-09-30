@@ -19,8 +19,10 @@ let impressumRef = document.getElementById('impressum');
 let myInterval;
 
 async function init() {
+    disableButtons()
     checkLengthAndRender(); // set interval()
     await fetchPokemonJson(0, 100);
+    enableButtons();
 }
 
 function toggleLoadingSpinner() {
@@ -59,18 +61,6 @@ function enter(event) {
     if (event.key === 'Enter') {
         searchPokemon();
         document.getElementById('searchInput').value = '';
-    }
-}
-
-function renderSearch(filteredPokedex, input) {
-    mainCardsRef.innerHTML = '';
-    if (filteredPokedex.length === 0) {
-        mainCardsRef.innerHTML = getSearchErrorHtml(input);
-    }
-    for (let k = 0; k < filteredPokedex.length; k++) {
-        let id = filteredPokedex[k].id
-        let i = pokeIdToPokeIndex(id)
-        mainCardsRef.innerHTML += getMainCardsHtml(i, filteredPokedex);
     }
 }
 
@@ -130,12 +120,23 @@ function PokeIdOnScreen(firstLast) {
     return Id
 }
 
-async function openDialog(i, event) {
+// #region Dialog functions
+
+async function openDialog(i, event, toggleStyling = null) {
     event.stopPropagation();
     await fetchEvoChainJson(i);
     dialogRef.showModal();
     dialogRef.innerHTML = getDialogCardHtml(i);
+    if (toggleStyling === 'yes') {
+        toggleDialogStyling('hidden');
+    }
+}
 
+function toggleDialogStyling(scrollBehaviour) {
+    dialogRef.classList.toggle('opened');
+    impressumRef.classList.toggle('opened')
+    document.body.style.overflowY = scrollBehaviour;
+    dialogRef.querySelectorAll('.pokeType').forEach(img => { img.classList.toggle('pokeTypeModal') })
 }
 
 async function prevNextPokemon(i, event) {
@@ -155,19 +156,23 @@ function closeDialog() {
     toggleDialogStyling('scroll');
 }
 
-function toggleDialogStyling(scrollBehaviour) {
-    dialogRef.classList.toggle('opened');
-    impressumRef.classList.toggle('opened')
-    document.body.style.overflowY = scrollBehaviour;
-    dialogRef.querySelectorAll('.pokeType').forEach(img => { img.classList.toggle('pokeTypeModal') })
+function showTab(name) {
+    let tab = document.getElementsByClassName('tab');
+    for (let i = 0; i < tab.length; i++) {
+        tab[i].style.display = "none";
+        tab[i].ariaSelected = "false";
+    }
+    document.getElementById(name).style.display = "block";
+    document.getElementById(name).ariaSelected= "true";
 }
 
 function openImpressum() {
     impressumRef.showModal();
     impressumRef.innerHTML = getImpressumHtml();
+    toggleDialogStyling('hidden');
 }
 
-/**** FETCHes to ARRAYs ****/
+// #endregion
 
 // #region fetches
 

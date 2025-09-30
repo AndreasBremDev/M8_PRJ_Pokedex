@@ -3,7 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    position: relative;
+    /* position: relative; */
 }
 
 :root {
@@ -60,7 +60,7 @@ a {
     align-items: center;
 }
 
-.j_c_center {
+.justify_center {
     justify-content: center;
 }
 
@@ -84,7 +84,7 @@ a {
     align-items: flex-end;
 }
 
-.visually-hidden {
+.h1-hidden {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -187,6 +187,10 @@ header>.container:hover {
     width: 16%;
 }
 
+.w33perc {
+    width: calc(33% - 8px);
+}
+
 .w80perc {
     width: 80%;
 }
@@ -194,7 +198,11 @@ header>.container:hover {
 .logo {
     width: 100%;
     object-fit: cover;
-    max-height: 400px;
+    object-position: top;
+}
+
+.max-h {
+    max-height: 280px;    
 }
 
 footer,
@@ -251,23 +259,31 @@ footer,
     clip-path: polygon(3% 0%, 100% 0%, 100% 50%, 97% 100%, 0 100%, 0 50%);
 }
 
+.evo-img {
+    width: 60px;
+}
+
 .dialog {
     /* closed */
     z-index: 2;
     position: fixed;
-    top: 10%;
+    top: 5%;
     left: 50%;
     transform: translateX(-50%);
     width: min(100%, 1440px);
+    /* min-width: 100%; */
     border: none;
     outline: none;
     overflow-y: auto;
     scrollbar-width: thin;
     clip-path: polygon(10% 0%, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+    min-height: 90vh;
 }
 
-.dialog .mainCard {
-    height: 80vh;
+
+
+.dialog .mainCard {  
+    margin-top: 50px; 
     text-align: center;
     clip-path: unset;
     background: url(./assets/img/pokeball_standard.svg) center 16% / 60% no-repeat;
@@ -299,14 +315,22 @@ footer,
     text-align: center;
 }
 
+.mainCard th {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+}
+
 .mainCard td {
     background-color: var(--bg-card-hover);
     line-height: 2rem;
     clip-path: polygon(9% 0%, 100% 0%, 100% 50%, 91% 100%, 0 100%, 0 50%);
+    
 }
 
 td.line-height {
     line-height: inherit;
+    clip-path: unset;
 }
 
 td.no-bg {
@@ -481,8 +505,9 @@ td.no-bg {
 
 .loading-Spinner {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    gap: 25%;
     background-color: var(--bg-general);
     flex: 1;
     position: absolute;
@@ -496,8 +521,13 @@ td.no-bg {
 .loading-Spinner.d_none {
     display: none;
 }
+.spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
 
-.loading-Spinner img {
+.spinner img {
     height: 100px;
     animation: spin 1s infinite linear;
 }

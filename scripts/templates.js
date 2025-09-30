@@ -1,6 +1,6 @@
 function getMainCardsHtml(i) {
     return `
-        <div class="container" onclick="openDialog(${i}, event); toggleDialogStyling('hidden')" data-pokeId="${pokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}" aria-label="Open Pokemon Detail view">
+        <div class="container" onclick="openDialog(${i}, event, 'yes')" data-pokeId="${pokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}" aria-label="Open Pokemon Detail view">
             <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
             <article class="mainCard" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
                 <div class="flex flex_col">
@@ -14,33 +14,51 @@ function getMainCardsHtml(i) {
 }
 
 function getDialogCardHtml(i) {
-    return `                
+    return `                  
         <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
         <article class="mainCard" class="pokeImg" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
             <div class="flex flex_col">
-                <div class="flex margin-and-width justify_between flex_end"class="">
+                <div class="flex margin-and-width justify_between flex_end">
                     <div class="container w16perc">
-                        <button onclick="prevNextPokemon(${i - 1}, event)" class="btn-main"><img src="./assets/icon/arrow_back.png" alt="back"></button>
+                        <button onclick="prevNextPokemon(${i - 1}, event)" class="btn-main" aria-label="previous Pokemon">
+                            <img src="./assets/icon/arrow_back.png" alt="back">
+                        </button>
                     </div>
                     <h3>No. ${pokedex[i].id}</h3>
                     <div class="container w16perc">
-                        <button onclick="prevNextPokemon(${i + 1}, event)" class="btn-main"><img src="./assets/icon/arrow_forward.png" alt="forward"></button>
+                        <button onclick="prevNextPokemon(${i + 1}, event)" class="btn-main" aria-label="next Pokemon">
+                            <img src="./assets/icon/arrow_forward.png" alt="forward">
+                        </button>
                     </div>
                 </div>
                 <h2>${renderPokeName(i)}</h2>
                 <div id="pokeType">${renderTypeImg(i)}</div>
                 </div>
-                <div>
+
+                <section role="group" class="flex margin-and-width justify_between">
+                    <div class="container w33perc">
+                        <button onclick="showTab('descr')" class="btn-main"
+                        role="tab" aria-selected="true" aria-controls="tabpanel-id" id="tab-desc">Description</button>
+                    </div>
+                    <div class="container w33perc" role="tab">
+                        <button onclick="showTab('evo')" class="btn-main"
+                        role="tab" aria-selected="false" aria-controls="tabpanel-id" id="tab-evo">Evolution</button>
+                    </div>
+                    <div class="container w33perc" role="tab">
+                        <button onclick="showTab('stats')" class="btn-main"
+                        role="tab" aria-selected="false" aria-controls="tabpanel-id" id="tab-stats">Stats</button>
+                    </div>
+                </section>
+
+                <div id="descr" class="tab" style="">
                     <table>
                         <tr>
                             <th width="100%">Description</th>
                         </tr>
                         <tr>
-                            <td class="no-bg clipOther line-height">${pokedex[i].description}</td>
+                            <td class="no-bg line-height">${pokedex[i].description}</td>
                         </tr>
                     </table>
-                </div> 
-                <div>
                     <table>
                         <tr>
                             <th width="50%">Height</th>
@@ -52,7 +70,7 @@ function getDialogCardHtml(i) {
                         </tr>
                     </table>
                 </div> 
-                <div>
+                <div id="stats" class="tab" style="display:none;">
                     <table>
                         <tr>
                             <th colspan="2">Abilities</th>
@@ -60,19 +78,17 @@ function getDialogCardHtml(i) {
                         <tr>${renderPokeAbilities(i)}
                         </tr>
                     </table>
-                </div> 
-                <div>
                     <table class="large-screen">
                         <tr>
                             <th colspan="6">Stats</th>
                         </tr>
                         <tr>
-                            <th width="16%" title="Health Points">HP</td>
-                            <th width="16%" title="Attack">ATK</td>
-                            <th width="16%" title="Defence">DEF</td>
-                            <th width="16%" title="Special Attack">SpA</td>
-                            <th width="16%" title="Special Defence">SpD</td>
-                            <th width="16%" title="Speed">SPD</td>
+                            <td width="16%" class="no-bg" title="Health Points">HP</td>
+                            <td width="16%" class="no-bg" title="Attack">ATK</td>
+                            <td width="16%" class="no-bg" title="Defence">DEF</td>
+                            <td width="16%" class="no-bg" title="Special Attack">SpA</td>
+                            <td width="16%" class="no-bg" title="Special Defence">SpD</td>
+                            <td width="16%" class="no-bg" title="Speed">SPD</td>
                         </tr>
                         <tr>
                             <td width="16%">${pokedex[i].stats[0].base_stat}</td>
@@ -84,7 +100,7 @@ function getDialogCardHtml(i) {
                         </tr>
                     </table>
                 </div> 
-                <div>
+                <div id="evo" class="tab" style="display:none;">
                     <table>
                         <tr>
                             <th colspan="5">Evolution</th>
@@ -95,21 +111,6 @@ function getDialogCardHtml(i) {
                 </div> 
             </div>
         </article>`
-}
-
-function getFilteredCardsHtml(i, filteredPokedex) {
-    return `
-        <div class="container" onclick="openDialog(${i}, event); toggleDialogStyling('hidden')" data-pokeId="${filteredPokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}">
-            <img src="${filteredPokedex[i].sprites}" alt="Pokemon ${filteredPokedex[i].name}" class="pokeImg">
-            <article class="mainCard" data-bg="${filteredPokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
-                <div class="flex flex_col">
-                    <h3>No. ${filteredPokedex[i].id}</h3>
-                    <h2>${renderPokeName(i)}</h2>
-                    <div id="pokeType">${renderTypeImg(i)}</div>
-                </div>
-            </article>
-        </div>
-    `
 }
 
 function getSearchErrorHtml(input){
@@ -141,7 +142,7 @@ function getPokeChainLoading() {
 }
 
 function getPokeEvoChainNameOne(chainId) {
-    return `<th width="20%"><img src="${chainId.name0Url}" alt="${chainId.name0}" title="${chainId.name0}" style="width:60px;"></th>`;
+    return `<th width="20%"><img src="${chainId.name0Url}" alt="${chainId.name0}" title="${chainId.name0}" class="evo-img"></th>`;
 }
 
 function getPokeEvoChainLevelOne(chainId) {
@@ -149,7 +150,7 @@ function getPokeEvoChainLevelOne(chainId) {
 }
 
 function getPokeEvoChainNameTwo(chainId) {
-    return `<th width="20%"><img src="${chainId.name1Url}" alt="${chainId.name1}" title="${chainId.name1}" style="width:60px;"></th>`;
+    return `<th width="20%"><img src="${chainId.name1Url}" alt="${chainId.name1}" title="${chainId.name1}" class="evo-img"></th>`;
 }
 
 function getPokeEvoChainLevelTwo(chainId) {
@@ -157,12 +158,12 @@ function getPokeEvoChainLevelTwo(chainId) {
 }
 
 function getPokeEvoChainNameThree(chainId) {
-    return `<th width="20%"><img src="${chainId.name2Url}" alt="${chainId.name2}" title="${chainId.name2}" style="width:60px;"></th>`;
+    return `<th width="20%"><img src="${chainId.name2Url}" alt="${chainId.name2}" title="${chainId.name2}" class="evo-img"></th>`;
 }
 
 function getImpressumHtml() {
     return `
-    <article class="mainCard flex j_c_center">
+    <article class="mainCard flex justify_center">
         <div class="w80perc">
             <h1>Impressum</h1>
             <p>Angaben gemäß § 5 DDG</p>

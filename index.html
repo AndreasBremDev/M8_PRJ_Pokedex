@@ -18,30 +18,40 @@
 
 <body onload="init()">
     <header class="flex margin-and-width flex_col">
-        <img src="./assets/img/title_pokemon.png" alt="Pokemon Logo" class="logo">
-        <h1 class="visually-hidden">Pokedex</h1>
+        <img src="./assets/img/title_pokemon.png" alt="Pokemon Logo max-h" class="logo">
+        <h1 class="h1-hidden">Pokedex</h1>
 
         <form class="container" onsubmit="return false;">
             <div class="search">
                 <input class="search-input" id="searchInput" type="search" onkeyup="enter(event)"
-                    placeholder="search loaded Pokemons" autocomplete="off" oninput="searchPokemon()" minlength="3">
-                <button class="search-button" onclick="searchPokemon()" type="button" aria-label="Search Pokemon by Name">
-                    <img class="search-icon" src="./assets/icon/search_icon.svg" alt="search magnifying glass" aria-hidden="true">
+                    placeholder="min 3 chararacter - search" autocomplete="off" oninput="searchPokemon()" minlength="3">
+                <button class="search-button" onclick="searchPokemon()" type="button"
+                    aria-label="Search Pokemon by Name">
+                    <img class="search-icon" src="./assets/icon/search_icon.svg" alt="search magnifying glass"
+                        aria-hidden="true">
                 </button>
             </div>
         </form>
     </header>
-    <div class="loading-Spinner d_none" id="spinner">
-        <img src="./assets/icon/icon.svg" alt="pokeball">
+    <div id="spinner" class="loading-Spinner d_none">
+        <div class="margin-and-width">
+            <img src="./assets/img/title_pokemon.png" alt="Pokemon logo" class="logo">
+        </div>
+        <div class="spinner">
+            <img src="./assets/icon/icon.svg" alt="pokeball">
+        </div>
     </div>
+
     <main>
 
         <div class="flex margin-and-width justify_between">
             <div class="container btn-main-width">
-                <button id="btn_prev" class="btn-main" onclick="showPrevTwenty()" disabled aria-disabled="true" aria-label="show previous 20 pokemons">previous 20</button>
+                <button id="btn_prev" class="btn-main" onclick="showPrevTwenty()" disabled aria-disabled="true"
+                    aria-label="show previous 20 pokemons">previous 20</button>
             </div>
             <div class="container btn-main-width">
-                <button id="btn_next" class="btn-main" onclick="showNextTwentyAndMoreTwenty('next')" aria-label="show previous 20 pokemons">
+                <button id="btn_next" class="btn-main" onclick="showNextTwentyAndMoreTwenty('next')"
+                    aria-label="show previous 20 pokemons" disabled>
                     <img id="smallSpinner1" class="small-spinner" src="./assets/icon/icon.svg" alt="pokeball"
                         style="display:none;">&nbsp;
                     next 20
@@ -60,7 +70,7 @@
 
         <div class="flex margin-and-width center">
             <div class="container btn-main-width">
-                <button onclick="showNextTwentyAndMoreTwenty('more')" id="btn_more" class="btn-main">
+                <button onclick="showNextTwentyAndMoreTwenty('more')" id="btn_more" class="btn-main" disabled>
                     <img id="smallSpinner2" class="small-spinner" src="./assets/icon/icon.svg" alt="pokeball"
                         style="display:none;">&nbsp;
                     20 more
@@ -70,7 +80,8 @@
 
     </main>
     <footer>
-        <span onclick="openImpressum();toggleDialogStyling('hidden')" role="button" aria-label="impressum dialog" aria-haspopup="dialog" aria-controls="impressum"><a>IMPRESSUM</a></span>
+        <span onclick="openImpressum()" role="button" aria-label="impressum dialog" aria-haspopup="dialog"
+            aria-controls="impressum"><a>IMPRESSUM</a></span>
         <div>(c) 2025 AndreasBremDev </div>
         <div class="social">
             <a href="https://www.facebook.com/andreas.steinig.1/" target="_blank">
