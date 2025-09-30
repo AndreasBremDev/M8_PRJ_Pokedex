@@ -78,7 +78,7 @@ function showPrevTwenty() {
         document.getElementById('btn_prev').disabled = true;
     }
     mainCardsRef.innerHTML = '';
-    renderPokemon(firstId - 21, firstId - 1)
+    firstId <= 21 ? renderPokemon(0, 20) : renderPokemon(firstId - 21, firstId - 1)
 }
 
 async function showNextTwentyAndMoreTwenty(elem = null) {
