@@ -153,7 +153,7 @@ function toggleDialogStyling(scrollBehaviour) {
 
 async function prevNextPokemonDialog(id, event) {
     event.stopPropagation();
-    if (id > pokedex[pokedex.length - 1].id - 1) {
+    if (id > pokedex[pokedex.length - 1].id) {
         id = 1;
     } else if (id < 1) {
         id = pokedex[pokedex.length - 1].id;
