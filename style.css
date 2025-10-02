@@ -263,14 +263,12 @@ footer,
 }
 
 .dialog {
-    /* closed */
     z-index: 2;
     position: fixed;
     top: 5%;
     left: 50%;
     transform: translateX(-50%);
     width: min(100%, 1440px);
-    /* min-width: 100%; */
     border: none;
     outline: none;
     overflow-y: auto;
