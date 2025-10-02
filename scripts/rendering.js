@@ -9,12 +9,12 @@ async function roundToLastTwentyAndRender() {
     from = (Math.ceil(lastId / 20) * 20) - 20;
     to = from + 20;
     mainCardsRef.innerHTML = '';
-    await fetchAndRenderPlusButtons();
+    await fetchAndRenderPlusButtons(from, to);
 }
 
-async function fetchAndRenderPlusButtons() {
+async function fetchAndRenderPlusButtons(from, to) {
     disableButtons();
-    if (pokedex.find(i => i.id === from && pokedex.find(j => j.id === to))) {
+    if (pokedex.find(i => i.id === from + 1 && pokedex.find(j => j.id === to))) {
         renderPokemon(from, to);
     } else {
         await fetchPokemonJson(from, to);
@@ -28,7 +28,7 @@ async function findLastIdOnScreenAndRenderNextTwenty(elem) {
     from = lastId;
     to = lastId + 20;
     if (elem === 'next') { mainCardsRef.innerHTML = ''; }
-    await fetchAndRenderPlusButtons();
+    await fetchAndRenderPlusButtons(from, to);
 }
 
 function renderPokeName(i) {

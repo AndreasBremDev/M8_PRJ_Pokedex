@@ -45,10 +45,9 @@ function searchPokemon() {
     if (input.length < 3) { return; }
     let filteredPokedex = pokedex.filter(item => {
         if (item.name.toLowerCase().includes(input)) {
-            // if (item === 0){displaySearchErrorMsg(input)}
             return item;
         }
-    })
+    });
     renderSearch(filteredPokedex, input);
 }
 
