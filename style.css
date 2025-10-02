@@ -286,7 +286,7 @@ footer,
 .dialog .mainCard {  
     text-align: center;
     clip-path: unset;
-    background: url(./assets/img/pokeball_standard.svg) 16% / 60% no-repeat;
+    background: url(./assets/img/pokeball_standard.svg) center 16% / 60% no-repeat;
 }
 
 .dialog::backdrop {
