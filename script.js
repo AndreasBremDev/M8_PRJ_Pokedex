@@ -76,13 +76,15 @@ function clearAndSearch() {
 
 function showPrevTwenty() {
     document.getElementById('searchInput').value = '';
-    let firstId = parseInt(PokeIdOnScreen('first'))
+    let firstId = parseInt(PokeIdOnScreen('first'));
+    let lastId = parseInt(PokeIdOnScreen('last'));
     mainCardsRef.innerHTML = '';
-    if (firstId >= 10000 && firstId < 10021) {
-        renderPokemon(1006, 1025);
-    } else if (firstId <= 21) {
+    if (firstId <= 21) {
         document.getElementById('btn_prev').disabled = true;
         renderPokemon(0, 20);
+    } else if (lastId === 1025) {
+        document.getElementById(`btn_next`).disabled = document.getElementById(`btn_more`).disabled = false;
+        renderPokemon(980, 1000);
     } else {
         renderPokemon(firstId - 21, firstId - 1)
     }
@@ -95,6 +97,10 @@ async function showNextTwentyAndMoreTwenty(elem = null) {
         renderPokemon(0, 20);
     } else if (parseInt(PokeIdOnScreen('last')) % 20 !== 0) {
         await roundToLastTwentyAndRender();
+    } else if (parseInt(PokeIdOnScreen('last')) === 1020) {
+        document.getElementById(`btn_next`).disabled = document.getElementById(`btn_more`).disabled = true;
+        await fetchPokemonJson(1020, 1025);
+        renderPokemon(1020, 1025);
     } else {
         await findLastIdOnScreenAndRenderNextTwenty(elem);
     }
