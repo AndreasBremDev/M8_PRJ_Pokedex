@@ -9,6 +9,7 @@ const pokeEvoChain = 'evolution-chain/'; // max count 541 (2025.09)
 let from = 0;
 let to = 20;
 let pokedex = [];
+let species = [];
 let evoChain = [];
 
 let spinnerRef = document.getElementById('spinner');
@@ -18,10 +19,14 @@ let impressumRef = document.getElementById('impressum');
 
 let myInterval;
 
+let pokemonBase = [];
+
 async function init() {
+    toggleLoadingSpinner();
     disableButtons()
-    checkLengthAndRender(); // set interval()
-    await fetchPokemonJson(0, 100);
+    await fetchPokemonJson(0, 20);
+    toggleLoadingSpinner();
+    renderPokemon(0, 20);
     enableButtons();
 }
 
@@ -29,31 +34,18 @@ function toggleLoadingSpinner() {
     document.getElementById('spinner').classList.toggle('d_none');
 }
 
-function checkLengthAndRender() {
-    mainCardsRef.innerHTML = '';
-    toggleLoadingSpinner();
-    myInterval = setInterval(() => {
-        if (pokedex.length >= 20) {
-            toggleLoadingSpinner();
-            renderPokemon(0, 20);
-            stopInterval();
-        }
-    }, 100)
-}
-
-function stopInterval() {
-    clearInterval(myInterval);
-}
+// #region search
 
 function searchPokemon() {
     let input = document.getElementById('searchInput').value.trim().toLowerCase();
     if (input.length === 0) {
         mainCardsRef.innerHTML = '';
-        renderPokemon(0, 80);
+        renderPokemon(0, 20);
     }
     if (input.length < 3) { return; }
     let filteredPokedex = pokedex.filter(item => {
         if (item.name.toLowerCase().includes(input)) {
+            // if (item === 0){displaySearchErrorMsg(input)}
             return item;
         }
     })
@@ -72,18 +64,22 @@ function clearAndSearch() {
     document.getElementById('searchInput').value = '';
 }
 
-function pokeIdToPokeIndex(id) {
-    let i = pokedex.findIndex(item => item.id === id);
-    return i;
-}
+// #endregion
+
+// #region buttons
 
 function showPrevTwenty() {
+    document.getElementById('searchInput').value = '';
     let firstId = parseInt(PokeIdOnScreen('first'))
-    if (firstId <= 21 || firstId === 10021) {
-        document.getElementById('btn_prev').disabled = true;
-    }
     mainCardsRef.innerHTML = '';
-    firstId <= 21 ? renderPokemon(0, 20) : renderPokemon(firstId - 21, firstId - 1)
+    if (firstId >= 10000 && firstId < 10021) {
+        renderPokemon(1006, 1025);
+    } else if (firstId <= 21) {
+        document.getElementById('btn_prev').disabled = true;
+        renderPokemon(0, 20);
+    } else {
+        renderPokemon(firstId - 21, firstId - 1)
+    }
 }
 
 async function showNextTwentyAndMoreTwenty(elem = null) {
@@ -92,14 +88,10 @@ async function showNextTwentyAndMoreTwenty(elem = null) {
         mainCardsRef.innerHTML = '';
         renderPokemon(0, 20);
     } else if (parseInt(PokeIdOnScreen('last')) % 20 !== 0) {
-        roundToLastTwentyAndRender();
+        await roundToLastTwentyAndRender();
     } else {
-        findLastIdOnScreenAndRenderNextTwenty(elem);
+        await findLastIdOnScreenAndRenderNextTwenty(elem);
     }
-    if (parseInt(PokeIdOnScreen('last')) >= pokedex.length - 20 || parseInt(PokeIdOnScreen('last')) <= pokedex) {
-        await fetchPokemonJson(pokedex.length, pokedex.length + 100)
-    }
-    enableButtons();
 }
 
 function disableButtons() {
@@ -128,13 +120,19 @@ function PokeIdOnScreen(firstLast) {
     return Id
 }
 
+// #endregion
+
 // #region Dialog functions
 
-async function openDialog(i, event, toggleStyling = null) {
+async function openDialog(id, event, toggleStyling = null) {
     event.stopPropagation();
-    await fetchEvoChainJson(i);
+    document.getElementById('searchInput').value = '';
+    await fetchSpecies(id);
+    rebuildPokedex(id);
+    await fetchEvoChainJson(id);
     dialogRef.showModal();
-    dialogRef.innerHTML = getDialogCardHtml(i);
+    let index = pokedex.indexOf(pokedex.find(i => i.id === id));
+    dialogRef.innerHTML = getDialogCardHtml(index);
     if (toggleStyling === 'yes') {
         toggleDialogStyling('hidden');
     }
@@ -147,15 +145,14 @@ function toggleDialogStyling(scrollBehaviour) {
     dialogRef.querySelectorAll('.pokeType').forEach(img => { img.classList.toggle('pokeTypeModal') })
 }
 
-async function prevNextPokemon(i, event) {
-    event.stopPropagation();
-    let lastId = parseInt(PokeIdOnScreen('last'));
-    if (i > lastId - 1) {
-        i = 0;
-    } else if (i < 0) {
-        i = lastId - 1;
+async function prevNextPokemonDialog(id, event) {
+    event.stopPropagation();    
+    if (id > pokedex[pokedex.length-1].id - 1) {
+        id = 1;
+    } else if (id < 1) {
+        id = pokedex[pokedex.length-1].id;
     }
-    await openDialog(i, event)
+    await openDialog(id, event);
 }
 
 function closeDialog() {
@@ -188,46 +185,83 @@ async function fetchPokemonJson(from, to) {
     try {
         for (let i = from; i < to; i++) {   // i auf Array.Länge
             let id = i + 1;
-            await fetchAndPushToArr(id);
+            let pokemonRes = await fetch(BASE_URL + pokemon + id);
+            let pokemonJson = await pokemonRes.json();
+            jsonToPokedex(pokemonJson)
         }
+
     } catch (error) {
         console.error("fetch Pokemon + Species:", error)
     }
     return pokedex;
 }
 
-async function fetchAndPushToArr(id) {
-    let [pokemonRes, speciesRes] = await Promise.all([
-        fetch(BASE_URL + pokemon + id),
-        fetch(BASE_URL + pokeSpecies + id)
-    ]);
-    let [pokemonJson, speciesJson] = await Promise.all([
-        pokemonRes.json(),
-        speciesRes.json()
-    ]);
-    jsonToPokedex(pokemonJson, speciesJson)
-}
-
-function jsonToPokedex(pokemonJson, speciesJson) {
+function jsonToPokedex(pokemonJson) {
     pokedex.push({
         id: pokemonJson.id,
         name: pokemonJson.name,
-        allNames: speciesJson.names,
         sprites: pokemonJson.sprites.other["official-artwork"].front_default,
         abilities: pokemonJson.abilities,
         types: pokemonJson.types,
         stats: pokemonJson.stats,
         weight: pokemonJson.weight,
         height: pokemonJson.height,
-        description: speciesJson.flavor_text_entries.find(item => item.language.name === "en").flavor_text.replace(/[\n\f]/g, " "),
-        evoChainLink: speciesJson.evolution_chain.url,
-        evoChainId: parseInt(speciesJson.evolution_chain.url.slice(42))
     });
 }
 
-async function fetchEvoChainJson(i) {
+async function fetchSpecies(id) {
+    let speciesRes = await fetch(BASE_URL + pokeSpecies + id);
+    let speciesJson = await speciesRes.json();
+    species.push({
+        id: speciesJson.id,
+        evoChainId: parseInt(speciesJson.evolution_chain.url.slice(42)),
+        description: speciesJson.flavor_text_entries.find(item => item.language.name === "en").flavor_text.replace(/[\n\f]/g, " "),
+        evoChainLink: speciesJson.evolution_chain.url
+    })
+    return species
+}
+
+function rebuildPokedex(id) {
+    let pokedexId = pokedex.find(i => i.id === id);
+    let speciesId = species.find(i => i.id === id);
+    let newPokedexEntry = {};
+    if (speciesId && pokedexId) {
+        newPokedexEntry = combineSpeciesToPokedex(newPokedexEntry, pokedexId, speciesId);
+        combinePokedex(newPokedexEntry)
+    } else {
+        console.error('Error at speciesId creation.')
+    }
+}
+
+function combineSpeciesToPokedex(newPokedexEntry, pokedexId, speciesId) {
+    newPokedexEntry = {
+        id: pokedexId.id,
+        name: pokedexId.name,
+        sprites: pokedexId.sprites,
+        abilities: pokedexId.abilities,
+        types: pokedexId.types,
+        stats: pokedexId.stats,
+        weight: pokedexId.weight,
+        height: pokedexId.height,
+        evoChainId: speciesId.evoChainId,
+        description: speciesId.description,
+        evoLink: speciesId.evoChainLink,
+    };
+    return newPokedexEntry;
+}
+
+function combinePokedex(newPokedexEntry) {
+    let pokemon = pokedex.find(p => p.id === newPokedexEntry.id);
+    let pokedexPos = pokedex.indexOf(pokemon);
+    pokedex[pokedexPos] = newPokedexEntry;
+    return pokedex;
+}
+
+async function fetchEvoChainJson(id) {
     try {
-        let evoRes = await fetch(BASE_URL + pokeEvoChain + pokedex[i].evoChainId);
+        let speciesId = species.find(i => i.id === id);
+        let evoChainId = speciesId.evoChainId;
+        let evoRes = await fetch(BASE_URL + pokeEvoChain + evoChainId);
         let evoResJson = await evoRes.json()
         evoChain.push(await jsonToEvoChain(evoResJson))
     } catch (error) {

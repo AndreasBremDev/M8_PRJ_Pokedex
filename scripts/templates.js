@@ -1,6 +1,6 @@
 function getMainCardsHtml(i) {
     return `
-        <div class="container" onclick="openDialog(${i}, event, 'yes')" data-pokeId="${pokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}" aria-controls="dialog">
+        <div class="container" onclick="openDialog(${pokedex[i].id}, event, 'yes')" data-pokeId="${pokedex[i].id}" data-evoChainId="${pokedex[i].evoChainId}" aria-controls="dialog">
             <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
             <article class="mainCard" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
                 <div class="flex flex_col">
@@ -15,18 +15,18 @@ function getMainCardsHtml(i) {
 
 function getDialogCardHtml(i) {
     return `                  
-        <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg">
+        <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg larger">
         <article class="mainCard" class="pokeImg" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
             <div class="flex flex_col">
                 <div class="flex margin-and-width justify_between flex_end">
                     <div class="container w16perc">
-                        <button onclick="prevNextPokemon(${i - 1}, event)" class="btn-main" aria-label="previous Pokemon">
+                        <button onclick="prevNextPokemonDialog(${pokedex[i].id - 1}, event)" class="btn-main" aria-label="previous Pokemon">
                             <img src="./assets/icon/arrow_back.png" alt="back">
                         </button>
                     </div>
                     <h3>No. ${pokedex[i].id}</h3>
                     <div class="container w16perc">
-                        <button onclick="prevNextPokemon(${i + 1}, event)" class="btn-main" aria-label="next Pokemon">
+                        <button onclick="prevNextPokemonDialog(${pokedex[i].id + 1}, event)" class="btn-main" aria-label="next Pokemon">
                             <img src="./assets/icon/arrow_forward.png" alt="forward">
                         </button>
                     </div>
@@ -35,7 +35,7 @@ function getDialogCardHtml(i) {
                 <div id="pokeType">${renderTypeImg(i)}</div>
                 </div>
 
-                <section role="group" class="flex margin-and-width justify_between">
+                <div role="group" class="flex margin-and-width justify_between">
                     <div class="container w33perc">
                         <button onclick="showTab('descr')" class="btn-main"
                         role="tab" aria-selected="true" aria-controls="tabpanel-id" id="tab-desc">Description</button>
@@ -48,7 +48,7 @@ function getDialogCardHtml(i) {
                         <button onclick="showTab('stats')" class="btn-main"
                         role="tab" aria-selected="false" aria-controls="tabpanel-id" id="tab-stats">Stats</button>
                     </div>
-                </section>
+                </div>
 
                 <div id="descr" class="tab" style="">
                     <table>
@@ -105,24 +105,22 @@ function getDialogCardHtml(i) {
                         <tr>
                             <th colspan="5">Evolution</th>
                         </tr>
-                        <tr>${renderPokeEvoChain(pokedex[i].evoChainId)}
-                        </tr>
+                        ${renderPokeEvoChain(pokedex[i].evoChainId)}
                     </table>
                 </div> 
             </div>
         </article>`
 }
 
-function getSearchErrorHtml(input){
+function getSearchErrorHtml(input, randomOne, randomTwo){
     return `
     <div style="text-align:center;">
             No result with your input: "${input}"
         <br><br>
             Please try another 🔍 search 
         <br><br>
-            try enter: <img src="${pokedex[19].sprites}" alt="Pokemon ${pokedex[19].name}" style="height:1rem;"> \"<b>Rattata</b>\"
-            <br>
-            try enter <img src="${pokedex[24].sprites}" alt="Pokemon ${pokedex[24].name}" style="height:1rem;"> \"<b>Pikachu</b>\"
+            try search: <img src="${pokedex[randomOne].sprites}" alt="Pokemon ${pokedex[randomOne].name}" style="height:1rem;"> \"<b>${pokedex[randomOne].name}</b>\"
+            
         <br><br>
             Alternatively click on "20 more" or "next 20".
     </div>
@@ -141,24 +139,32 @@ function getPokeChainLoading() {
     return `<td colspan="5" class="loading">⏳ Loading evolution...</td>`
 }
 
-function getPokeEvoChainNameOne(chainId) {
+function getEvoImageOne(chainId) {
     return `<th width="20%"><img src="${chainId.name0Url}" alt="${chainId.name0}" title="${chainId.name0}" class="evo-img"></th>`;
 }
 
-function getPokeEvoChainLevelOne(chainId) {
-    return `<th width="20%" class="no-bg" title="Level up at Lv.${chainId.lv1}">\></th>`;
+function getEvoNextArrow() {
+    return `<td width="20%" class="no-bg"><b>\></b></th>`;
 }
 
-function getPokeEvoChainNameTwo(chainId) {
+function getEvoNameOne(chainId) {
+    return `<td width="20%" class="no-bg">${chainId.name0.charAt(0).toUpperCase() + chainId.name0.slice(1)}</td>`
+}
+
+function getEvoImageTwo(chainId) {
     return `<th width="20%"><img src="${chainId.name1Url}" alt="${chainId.name1}" title="${chainId.name1}" class="evo-img"></th>`;
 }
 
-function getPokeEvoChainLevelTwo(chainId) {
-    return `<th width="20%" class="no-bg" title="Level up at Lv.${chainId.lv1}">\></th>`;
+function getEvoNameTwo(chainId) {
+    return `<td width="20%" class="no-bg">${chainId.name1.charAt(0).toUpperCase() + chainId.name1.slice(1)}</td>`
 }
 
-function getPokeEvoChainNameThree(chainId) {
+function getEvoImageThree(chainId) {
     return `<th width="20%"><img src="${chainId.name2Url}" alt="${chainId.name2}" title="${chainId.name2}" class="evo-img"></th>`;
+}
+
+function getEvoNameThree(chainId) {
+    return `<td width="20%" class="no-bg">${chainId.name2.charAt(0).toUpperCase() + chainId.name2.slice(1)}</td>`
 }
 
 function getImpressumHtml() {

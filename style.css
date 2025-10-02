@@ -241,7 +241,7 @@ footer,
 }
 
 .mainCard h3 {
-    font-weight: 400;
+    font-weight: 500;
     margin-top: 164px;
 }
 
@@ -278,15 +278,15 @@ footer,
     scrollbar-width: thin;
     clip-path: polygon(10% 0%, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
     min-height: 90vh;
+    padding-top: 1rem;
 }
 
 
 
 .dialog .mainCard {  
-    margin-top: 50px; 
     text-align: center;
     clip-path: unset;
-    background: url(./assets/img/pokeball_standard.svg) center 16% / 60% no-repeat;
+    background: url(./assets/img/pokeball_standard.svg) 16% / 60% no-repeat;
 }
 
 .dialog::backdrop {
@@ -359,7 +359,7 @@ td.no-bg {
     background-color: var(--bg-normal-1);
 }
 
-.dialog .mainCard[data-bg="normal-1"]:hover {
+.dialog .mainCard[data-bg="normal-1"] {
     background: url(./assets/img/ball_1_normal.svg) center 16% / 60% no-repeat;
 }
 
@@ -367,7 +367,7 @@ td.no-bg {
     background-color: var(--bg-fighting-2);
 }
 
-.dialog .mainCard[data-bg="fighting-2"]:hover {
+.dialog .mainCard[data-bg="fighting-2"] {
     background: url(./assets/img/ball_2_fighting.svg) center 16% / 60% no-repeat;
 }
 
@@ -375,7 +375,7 @@ td.no-bg {
     background-color: var(--bg-flying-3);
 }
 
-.dialog .mainCard[data-bg="flying-3"]:hover {
+.dialog .mainCard[data-bg="flying-3"] {
     background: url(./assets/img/ball_3_flying.svg) center 16% / 60% no-repeat;
 }
 
@@ -383,7 +383,7 @@ td.no-bg {
     background-color: var(--bg-poison-4);
 }
 
-.dialog .mainCard[data-bg="poison-4"]:hover {
+.dialog .mainCard[data-bg="poison-4"] {
     background: url(./assets/img/ball_4_poison.svg) center 16% / 60% no-repeat;
 }
 
@@ -391,7 +391,7 @@ td.no-bg {
     background-color: var(--bg-ground-5);
 }
 
-.dialog .mainCard[data-bg="ground-5"]:hover {
+.dialog .mainCard[data-bg="ground-5"] {
     background: url(./assets/img/ball_5_ground.svg) center 16% / 60% no-repeat;
 }
 
@@ -399,7 +399,7 @@ td.no-bg {
     background-color: var(--bg-rock-6);
 }
 
-.dialog .mainCard[data-bg="rock-6"]:hover {
+.dialog .mainCard[data-bg="rock-6"] {
     background: url(./assets/img/ball_6_rock.svg) center 16% / 60% no-repeat;
 }
 
@@ -407,7 +407,7 @@ td.no-bg {
     background-color: var(--bg-bug-7);
 }
 
-.dialog .mainCard[data-bg="bug-7"]:hover {
+.dialog .mainCard[data-bg="bug-7"] {
     background: url(./assets/img/ball_7_bug.svg) center 16% / 60% no-repeat;
 }
 
@@ -415,7 +415,7 @@ td.no-bg {
     background-color: var(--bg-ghost-8);
 }
 
-.dialog .mainCard[data-bg="ghost-8"]:hover {
+.dialog .mainCard[data-bg="ghost-8"] {
     background: url(./assets/img/ball_8_ghost.svg) center 16% / 60% no-repeat;
 }
 
@@ -423,7 +423,7 @@ td.no-bg {
     background-color: var(--bg-steel-9);
 }
 
-.dialog .mainCard[data-bg="steel-9"]:hover {
+.dialog .mainCard[data-bg="steel-9"] {
     background: url(./assets/img/ball_9_steel.svg) center 16% / 60% no-repeat;
 }
 
@@ -431,7 +431,7 @@ td.no-bg {
     background-color: var(--bg-fire-10);
 }
 
-.dialog .mainCard[data-bg="fire-10"]:hover {
+.dialog .mainCard[data-bg="fire-10"] {
     background: url(./assets/img/ball_10_fire.svg) center 16% / 60% no-repeat;
 }
 
@@ -439,7 +439,7 @@ td.no-bg {
     background-color: var(--bg-water-11);
 }
 
-.dialog .mainCard[data-bg="water-11"]:hover {
+.dialog .mainCard[data-bg="water-11"] {
     background: url(./assets/img/ball_11_water.svg) center 16% / 60% no-repeat;
 }
 
@@ -447,7 +447,7 @@ td.no-bg {
     background-color: var(--bg-grass-12);
 }
 
-.dialog .mainCard[data-bg="grass-12"]:hover {
+.dialog .mainCard[data-bg="grass-12"] {
     background: url(./assets/img/ball_12_grass.svg) center 16% / 60% no-repeat;
 }
 
@@ -455,7 +455,7 @@ td.no-bg {
     background-color: var(--bg-electric-13);
 }
 
-.dialog .mainCard[data-bg="electric-13"]:hover {
+.dialog .mainCard[data-bg="electric-13"] {
     background: url(./assets/img/ball_13_electric.svg) center 16% / 60% no-repeat;
 }
 
@@ -463,7 +463,7 @@ td.no-bg {
     background-color: var(--bg-psychic-14);
 }
 
-.dialog .mainCard[data-bg="psychic-14"]:hover {
+.dialog .mainCard[data-bg="psychic-14"] {
     background: url(./assets/img/ball_14_psychic.svg) center 16% / 60% no-repeat;
 }
 
@@ -471,7 +471,7 @@ td.no-bg {
     background-color: var(--bg-ice-15);
 }
 
-.dialog .mainCard[data-bg="ice-15"]:hover {
+.dialog .mainCard[data-bg="ice-15"] {
     background: url(./assets/img/ball_15_ice.svg) center 16% / 60% no-repeat;
 }
 
@@ -479,7 +479,7 @@ td.no-bg {
     background-color: var(--bg-dragon-16);
 }
 
-.dialog .mainCard[data-bg="dragon-16"]:hover {
+.dialog .mainCard[data-bg="dragon-16"] {
     background: url(./assets/img/ball_16_dragon.svg) center 16% / 60% no-repeat;
 }
 
@@ -487,7 +487,7 @@ td.no-bg {
     background-color: var(--bg-dark-17);
 }
 
-.dialog .mainCard[data-bg="dark-17"]:hover {
+.dialog .mainCard[data-bg="dark-17"] {
     background: url(./assets/img/ball_17_dark.svg) center 16% / 60% no-repeat;
 }
 
@@ -495,7 +495,7 @@ td.no-bg {
     background-color: var(--bg-fairy-18);
 }
 
-.dialog .mainCard[data-bg="fairy-18"]:hover {
+.dialog .mainCard[data-bg="fairy-18"] {
     background: url(./assets/img/ball_18_fairy.svg) center 16% / 60% no-repeat;
 }
 
