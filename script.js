@@ -2,6 +2,7 @@ const typesObj = {
     normal: 1, fighting: 2, flying: 3, poison: 4, ground: 5, rock: 6, bug: 7, ghost: 8, steel: 9,
     fire: 10, water: 11, grass: 12, electric: 13, psychic: 14, ice: 15, dragon: 16, dark: 17, fairy: 18
 };
+const placeholder = ['min 3 character - Search', 'min 3 character - Name', 'min 3 character - Type']
 const BASE_URL = 'https://pokeapi.co/api/v2/';
 const pokemon = 'pokemon/'; // max count 1302 / 0-1025 + 10000-10277 (2025.09)
 const pokeSpecies = 'pokemon-species/';
@@ -17,10 +18,6 @@ let mainCardsRef = document.getElementById('mainCards');
 let dialogRef = document.getElementById('dialog');
 let impressumRef = document.getElementById('impressum');
 
-let myInterval;
-
-let pokemonBase = [];
-
 async function init() {
     toggleLoadingSpinner();
     disableButtons()
@@ -28,6 +25,7 @@ async function init() {
     toggleLoadingSpinner();
     renderPokemon(0, 20);
     enableButtons();
+    changeSearchPlaceholder();
 }
 
 function toggleLoadingSpinner() {
@@ -44,11 +42,20 @@ function searchPokemon() {
     }
     if (input.length < 3) { return; }
     let filteredPokedex = pokedex.filter(item => {
-        if (item.name.toLowerCase().includes(input)) {
+        if (item.name.toLowerCase().includes(input) || item.types.find(item => item.type.name.includes(input))) {
             return item;
         }
     });
     renderSearch(filteredPokedex, input);
+}
+
+function changeSearchPlaceholder() {
+    let input = document.getElementById('searchInput');
+    let index = 0;
+    setInterval(() => {
+        input.setAttribute('placeholder', placeholder[index]);
+        index = (index + 1) % placeholder.length;
+    }, 2000);
 }
 
 function enter(event) {
@@ -145,11 +152,11 @@ function toggleDialogStyling(scrollBehaviour) {
 }
 
 async function prevNextPokemonDialog(id, event) {
-    event.stopPropagation();    
-    if (id > pokedex[pokedex.length-1].id - 1) {
+    event.stopPropagation();
+    if (id > pokedex[pokedex.length - 1].id - 1) {
         id = 1;
     } else if (id < 1) {
-        id = pokedex[pokedex.length-1].id;
+        id = pokedex[pokedex.length - 1].id;
     }
     await openDialog(id, event);
 }
