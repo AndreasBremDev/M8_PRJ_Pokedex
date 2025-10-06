@@ -15,8 +15,9 @@ function getMainCardsHtml(i) {
 
 function getDialogCardHtml(i) {
     return `                  
-        <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg larger">
-        <article class="mainCard" class="pokeImg" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
+    <div  style="border: 1px solid purple"    >
+    <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg larger">
+        <article class="mainCard" class="pokeImg" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}" style="border: 1px solid red">
             <div class="flex flex_col">
                 <div class="flex margin-and-width justify_between flex_end">
                     <div class="container w16perc">
@@ -35,7 +36,7 @@ function getDialogCardHtml(i) {
                 <div id="pokeType">${renderTypeImg(i)}</div>
                 </div>
 
-                <div role="group" class="flex margin-and-width justify_between">
+                <div role="group" class="flex margin-and-width justify_between" style="border: 1px solid green">
                     <div class="container w33perc">
                         <button onclick="showTab('descr')" class="btn-main"
                         role="tab" aria-selected="true" aria-controls="tabpanel-id" id="tab-desc">Description</button>
@@ -50,7 +51,7 @@ function getDialogCardHtml(i) {
                     </div>
                 </div>
 
-                <div id="descr" class="tab" style="">
+                <div id="descr" class="tab"  style="border: 1px solid yellow">
                     <table>
                         <tr>
                             <th width="100%">Description</th>
@@ -109,7 +110,8 @@ function getDialogCardHtml(i) {
                     </table>
                 </div> 
             </div>
-        </article>`
+        </article>
+        </div>`
 }
 
 function getSearchErrorHtml(input, randomOne, randomTwo){
