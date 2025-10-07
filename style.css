@@ -274,16 +274,16 @@ footer,
     overflow-y: auto;
     scrollbar-width: thin;
     clip-path: polygon(10% 0%, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
-    min-height: 90vh;
-    padding-top: 1rem;
 }
 
 
 
 .dialog .mainCard {  
+    height: 90vh;
     text-align: center;
     clip-path: unset;
     background: url(./assets/img/pokeball_standard.svg) center 16% / 60% no-repeat;
+    position: relative;
 }
 
 .dialog::backdrop {

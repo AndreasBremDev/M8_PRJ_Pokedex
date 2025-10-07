@@ -5,14 +5,15 @@
 }
 
 @media (min-width: 685px) {
-    .dialog {
+    .dialog .mainCard {
         padding-top: 10vh;
     }
-}
-@media (min-width: 601px) {
     .pokeImg.larger {
         height: 184px;
     }
+}
+
+@media (min-width: 601px) {
 
     .evo-img {
         width: 120px;

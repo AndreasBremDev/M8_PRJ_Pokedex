@@ -167,6 +167,27 @@ async function prevNextPokemonDialog(id, event) {
     await openDialog(id, event);
 }
 
+
+
+// document.addEventListener('click', (event) => {
+//     if (dialogRef.open && dialogRef.contains(event.target)) {
+//         closeDialog();
+//     }
+// });
+
+// document.addEventListener('click', (event) => {
+//     if (dialogRef.open && event.target !== dialogRef) {
+//         closeDialog();
+//     }
+// });
+
+// function onClick(event){
+//     if (event.target === dialogRef) {
+//         closeDialog();
+//     }
+// }
+// dialogRef.addEventListener('click', onClick);
+
 function closeDialog() {
     dialogRef.close();
     impressumRef.close();

@@ -15,103 +15,100 @@ function getMainCardsHtml(i) {
 
 function getDialogCardHtml(i) {
     return `                  
-    <div  style="border: 1px solid purple"    >
-    <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg larger">
-        <article class="mainCard" class="pokeImg" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}" style="border: 1px solid red">
-            <div class="flex flex_col">
-                <div class="flex margin-and-width justify_between flex_end">
-                    <div class="container w16perc">
-                        <button onclick="prevNextPokemonDialog(${pokedex[i].id - 1}, event)" class="btn-main" aria-label="previous Pokemon">
-                            <img src="./assets/icon/arrow_back.png" alt="back">
-                        </button>
-                    </div>
-                    <h3>No. ${pokedex[i].id}</h3>
-                    <div class="container w16perc">
-                        <button onclick="prevNextPokemonDialog(${pokedex[i].id + 1}, event)" class="btn-main" aria-label="next Pokemon">
-                            <img src="./assets/icon/arrow_forward.png" alt="forward">
-                        </button>
-                    </div>
-                </div>
-                <h2>${renderPokeName(i)}</h2>
-                <div id="pokeType">${renderTypeImg(i)}</div>
-                </div>
-
-                <div role="group" class="flex margin-and-width justify_between" style="border: 1px solid green">
-                    <div class="container w33perc">
-                        <button onclick="showTab('descr')" class="btn-main"
-                        role="tab" aria-selected="true" aria-controls="tabpanel-id" id="tab-desc">Description</button>
-                    </div>
-                    <div class="container w33perc" role="tab">
-                        <button onclick="showTab('evo')" class="btn-main"
-                        role="tab" aria-selected="false" aria-controls="tabpanel-id" id="tab-evo">Evolution</button>
-                    </div>
-                    <div class="container w33perc" role="tab">
-                        <button onclick="showTab('stats')" class="btn-main"
-                        role="tab" aria-selected="false" aria-controls="tabpanel-id" id="tab-stats">Stats</button>
-                    </div>
-                </div>
-
-                <div id="descr" class="tab"  style="border: 1px solid yellow">
-                    <table>
-                        <tr>
-                            <th width="100%">Description</th>
-                        </tr>
-                        <tr>
-                            <td class="no-bg line-height">${pokedex[i].description}</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <th width="50%">Height</th>
-                            <th width="50%">Weight</th>
-                        </tr>
-                        <tr>
-                            <td width="50%" class="clipOther">${pokedex[i].height / 10}m</td>
-                            <td width="50%" class="clipOther">${pokedex[i].weight / 10}kg</td>
-                        </tr>
-                    </table>
-                </div> 
-                <div id="stats" class="tab" style="display:none;">
-                    <table>
-                        <tr>
-                            <th colspan="2">Abilities</th>
-                        </tr>
-                        <tr>${renderPokeAbilities(i)}
-                        </tr>
-                    </table>
-                    <table class="large-screen">
-                        <tr>
-                            <th colspan="6">Stats</th>
-                        </tr>
-                        <tr>
-                            <td width="16%" class="no-bg" title="Health Points">HP</td>
-                            <td width="16%" class="no-bg" title="Attack">ATK</td>
-                            <td width="16%" class="no-bg" title="Defence">DEF</td>
-                            <td width="16%" class="no-bg" title="Special Attack">SpA</td>
-                            <td width="16%" class="no-bg" title="Special Defence">SpD</td>
-                            <td width="16%" class="no-bg" title="Speed">SPD</td>
-                        </tr>
-                        <tr>
-                            <td width="16%">${pokedex[i].stats[0].base_stat}</td>
-                            <td width="16%">${pokedex[i].stats[1].base_stat}</td>
-                            <td width="16%">${pokedex[i].stats[2].base_stat}</td>
-                            <td width="16%">${pokedex[i].stats[3].base_stat}</td>
-                            <td width="16%">${pokedex[i].stats[4].base_stat}</td>
-                            <td width="16%">${pokedex[i].stats[5].base_stat}</td>
-                        </tr>
-                    </table>
-                </div> 
-                <div id="evo" class="tab" style="display:none;">
-                    <table>
-                        <tr>
-                            <th colspan="5">Evolution</th>
-                        </tr>
-                        ${renderPokeEvoChain(pokedex[i].evoChainId)}
-                    </table>
-                </div> 
+    <article class="mainCard flex flex_col" class="pokeImg" data-bg="${pokedex[i].types[0].type.name}-${findNumberOfTypesObj(i)}">
+        <img src="${pokedex[i].sprites}" alt="Pokemon ${pokedex[i].name}" class="pokeImg larger">
+        <div class="flex margin-and-width justify_between flex_end">
+            <div class="container w16perc">
+                <button onclick="prevNextPokemonDialog(${pokedex[i].id - 1}, event)" class="btn-main" aria-label="previous Pokemon">
+                    <img src="./assets/icon/arrow_back.png" alt="back">
+                </button>
             </div>
-        </article>
-        </div>`
+            <h3>No. ${pokedex[i].id}</h3>
+            <div class="container w16perc">
+                <button onclick="prevNextPokemonDialog(${pokedex[i].id + 1}, event)" class="btn-main" aria-label="next Pokemon">
+                    <img src="./assets/icon/arrow_forward.png" alt="forward">
+                </button>
+            </div>
+        </div>
+        <h2>${renderPokeName(i)}</h2>
+        <div style="background-color: white; flex: 1;">
+            <div id="pokeType">${renderTypeImg(i)}
+            </div>
+            <div role="group" class="flex margin-and-width justify_between">
+                <div class="container w33perc">
+                    <button onclick="showTab('descr')" class="btn-main"
+                    role="tab" aria-selected="true" aria-controls="tabpanel-id" id="tab-desc">Description</button>
+                </div>
+                <div class="container w33perc" role="tab">
+                    <button onclick="showTab('evo')" class="btn-main"
+                    role="tab" aria-selected="false" aria-controls="tabpanel-id" id="tab-evo">Evolution</button>
+                </div>
+                <div class="container w33perc" role="tab">
+                    <button onclick="showTab('stats')" class="btn-main"
+                    role="tab" aria-selected="false" aria-controls="tabpanel-id" id="tab-stats">Stats</button>
+                </div>
+            </div>
+
+            <div id="descr" class="tab">
+                <table>
+                    <tr>
+                        <th width="100%">Description</th>
+                    </tr>
+                    <tr>
+                        <td class="no-bg line-height">${pokedex[i].description}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th width="50%">Height</th>
+                        <th width="50%">Weight</th>
+                    </tr>
+                    <tr>
+                        <td width="50%" class="clipOther">${pokedex[i].height / 10}m</td>
+                        <td width="50%" class="clipOther">${pokedex[i].weight / 10}kg</td>
+                    </tr>
+                </table>
+            </div> 
+            <div id="stats" class="tab" style="display:none;">
+                <table>
+                    <tr>
+                        <th colspan="2">Abilities</th>
+                    </tr>
+                    <tr>${renderPokeAbilities(i)}
+                    </tr>
+                </table>
+                <table class="large-screen">
+                    <tr>
+                        <th colspan="6">Stats</th>
+                    </tr>
+                    <tr>
+                        <td width="16%" class="no-bg" title="Health Points">HP</td>
+                        <td width="16%" class="no-bg" title="Attack">ATK</td>
+                        <td width="16%" class="no-bg" title="Defence">DEF</td>
+                        <td width="16%" class="no-bg" title="Special Attack">SpA</td>
+                        <td width="16%" class="no-bg" title="Special Defence">SpD</td>
+                        <td width="16%" class="no-bg" title="Speed">SPD</td>
+                    </tr>
+                    <tr>
+                        <td width="16%">${pokedex[i].stats[0].base_stat}</td>
+                        <td width="16%">${pokedex[i].stats[1].base_stat}</td>
+                        <td width="16%">${pokedex[i].stats[2].base_stat}</td>
+                        <td width="16%">${pokedex[i].stats[3].base_stat}</td>
+                        <td width="16%">${pokedex[i].stats[4].base_stat}</td>
+                        <td width="16%">${pokedex[i].stats[5].base_stat}</td>
+                    </tr>
+                </table>
+            </div> 
+            <div id="evo" class="tab" style="display:none;">
+                <table>
+                    <tr>
+                        <th colspan="5">Evolution</th>
+                    </tr>
+                    ${renderPokeEvoChain(pokedex[i].evoChainId)}
+                </table>
+            </div> 
+        </div> 
+    </article>`
 }
 
 function getSearchErrorHtml(input, randomOne, randomTwo){
@@ -146,7 +143,7 @@ function getEvoImageOne(chainId) {
 }
 
 function getEvoNextArrow() {
-    return `<td width="20%" class="no-bg"><b>\></b></th>`;
+    return `<td width="20%" class="no-bg"><b>&#10148;</b></th>`;
 }
 
 function getEvoNameOne(chainId) {
